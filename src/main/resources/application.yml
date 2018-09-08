@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    name: test
+    url: jdbc:mysql://39.108.128.195:3306/arvinzhang
+    username: root
+    password: arvinzhang
+    # Druid数据库连接
+    driver-class-name: com.mysql.jdbc.Driver
+
+## mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.yingwu.digital.bean.POJO

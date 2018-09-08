@@ -1,0 +1,71 @@
+package com.yingwu.digital;
+
+import com.yingwu.digital.bean.POJO.KLine;
+import com.yingwu.digital.domain.HuobiKLineData;
+import com.yingwu.digital.domain.ws.HuobiWSDepthEvent;
+import com.yingwu.digital.domain.ws.HuobiWSError;
+import com.yingwu.digital.domain.ws.HuobiWSKLineEvent;
+import com.yingwu.digital.misc.HuobiWSEventHandler;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.BeanUtils;
+
+import java.util.List;
+
+public class HuobiKLineTest {
+
+    @Test
+    public void test() throws HuobiApiException {
+        HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
+        HuobiApiRestClient client = factory.newRestClient();
+        List<HuobiKLineData> list = client.kline("btcusdt","5min",10);
+        Assert.assertFalse(list.isEmpty());
+        for (HuobiKLineData data: list){
+            System.out.println(data);
+        }
+    }
+
+    @Test
+    public void wsTest() throws HuobiApiException, InterruptedException {
+        HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
+        HuobiApiWSClient client = factory.newWSClient();
+        client.depth("btcusdt", "step0", new HuobiWSEventHandler() {
+            @Override
+            public void handleDepth(HuobiWSDepthEvent event) {
+                System.out.println(event.toString());
+            }
+        });
+
+//        client.kline("ltcbtc", "5min", new HuobiWSEventHandler() {
+//            @Override
+//            public void handleKLine(HuobiWSKLineEvent event) {
+//                System.out.println(event);
+//                KLine kLine = new KLine();
+//                BeanUtils.copyProperties(event,kLine);
+//                HuobiKLineData data = event.getData();
+//                BeanUtils.copyProperties(data,kLine);
+//                System.out.println(kLine.toString());
+//            }
+//
+//            @Override
+//            public void onError(HuobiWSError error) {
+//                System.err.println(error);
+//            }
+//        });
+        HuobiApiWSClient client1 = factory.newWSClient();
+
+        client.kline("ltcbtc", "1min", new HuobiWSEventHandler() {
+            @Override
+            public void handleKLine(HuobiWSKLineEvent event) {
+                System.out.println(event);
+            }
+
+            @Override
+            public void onError(HuobiWSError error) {
+                System.err.println(error);
+            }
+        });
+
+        Thread.sleep(100000000 * 10);
+    }
+}
