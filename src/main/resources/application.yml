@@ -15,3 +15,6 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.yingwu.digital.bean.POJO
 
+logging:
+  config: classpath:log4j2.xml
+

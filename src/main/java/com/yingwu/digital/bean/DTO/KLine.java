@@ -162,4 +162,26 @@ public class KLine {
     public void setExt3(String ext3) {
         this.ext3 = ext3 == null ? null : ext3.trim();
     }
+
+    @Override
+    public String toString() {
+        return "KLine{" +
+                "id=" + id +
+                ", channel='" + channel + '\'' +
+                ", ts='" + ts + '\'' +
+                ", klinId='" + klinId + '\'' +
+                ", amount=" + amount +
+                ", count=" + count +
+                ", open=" + open +
+                ", close=" + close +
+                ", low=" + low +
+                ", high=" + high +
+                ", vol=" + vol +
+                ", period='" + period + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", ext1='" + ext1 + '\'' +
+                ", ext2='" + ext2 + '\'' +
+                ", ext3='" + ext3 + '\'' +
+                '}';
+    }
 }

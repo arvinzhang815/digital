@@ -110,4 +110,21 @@ public class Depth {
     public void setSymbol(String symbol) {
         this.symbol = symbol == null ? null : symbol.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Depth{" +
+                "id=" + id +
+                ", channel='" + channel + '\'' +
+                ", ts='" + ts + '\'' +
+                ", bids='" + bids + '\'' +
+                ", asks='" + asks + '\'' +
+                ", requestId='" + requestId + '\'' +
+                ", ext1='" + ext1 + '\'' +
+                ", ext2='" + ext2 + '\'' +
+                ", ext3='" + ext3 + '\'' +
+                ", type='" + type + '\'' +
+                ", symbol='" + symbol + '\'' +
+                '}';
+    }
 }

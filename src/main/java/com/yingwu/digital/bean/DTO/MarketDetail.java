@@ -152,4 +152,25 @@ public class MarketDetail {
     public void setExt3(String ext3) {
         this.ext3 = ext3 == null ? null : ext3.trim();
     }
+
+    @Override
+    public String toString() {
+        return "MarketDetail{" +
+                "id=" + id +
+                ", ts='" + ts + '\'' +
+                ", requestId='" + requestId + '\'' +
+                ", amount=" + amount +
+                ", count=" + count +
+                ", open=" + open +
+                ", close=" + close +
+                ", tickId='" + tickId + '\'' +
+                ", low=" + low +
+                ", high=" + high +
+                ", vol=" + vol +
+                ", symbol='" + symbol + '\'' +
+                ", ext1='" + ext1 + '\'' +
+                ", ext2='" + ext2 + '\'' +
+                ", ext3='" + ext3 + '\'' +
+                '}';
+    }
 }
