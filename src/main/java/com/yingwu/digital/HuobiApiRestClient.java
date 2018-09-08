@@ -1,7 +1,7 @@
 package com.yingwu.digital;
 
 
-import com.yingwu.digital.domain.*;
+import com.yingwu.digital.bean.*;
 
 import java.util.List;
 

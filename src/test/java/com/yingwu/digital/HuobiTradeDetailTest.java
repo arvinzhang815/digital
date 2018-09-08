@@ -1,7 +1,7 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.domain.ws.HuobiWSTradeDetailEvent;
-import com.yingwu.digital.misc.HuobiWSEventHandler;
+import com.yingwu.digital.bean.ws.HuobiWSTradeDetailEvent;
+import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.junit.Test;
 
 public class HuobiTradeDetailTest {

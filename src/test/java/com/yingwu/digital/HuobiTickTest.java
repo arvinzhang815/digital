@@ -1,6 +1,6 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.domain.HuobiTick;
+import com.yingwu.digital.bean.HuobiTick;
 import org.junit.Assert;
 import org.junit.Test;
 

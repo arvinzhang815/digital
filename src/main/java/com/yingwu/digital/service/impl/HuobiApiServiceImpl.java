@@ -5,26 +5,23 @@ import com.yingwu.digital.HuobiApiWSClient;
 import com.yingwu.digital.base.ApiRequest;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.base.DigitalException;
-import com.yingwu.digital.bean.POJO.Depth;
-import com.yingwu.digital.bean.POJO.KLine;
-import com.yingwu.digital.bean.POJO.TradeDetail;
+import com.yingwu.digital.bean.DTO.Depth;
+import com.yingwu.digital.bean.DTO.KLine;
+import com.yingwu.digital.bean.DTO.TradeDetail;
 import com.yingwu.digital.dao.DepthMapper;
 import com.yingwu.digital.dao.KLineMapper;
 import com.yingwu.digital.dao.TradeDetailMapper;
-import com.yingwu.digital.domain.HuobiKLineData;
-import com.yingwu.digital.domain.HuobiTradeDetail;
-import com.yingwu.digital.domain.ws.HuobiWSDepthEvent;
-import com.yingwu.digital.domain.ws.HuobiWSKLineEvent;
-import com.yingwu.digital.domain.ws.HuobiWSTradeDetailEvent;
-import com.yingwu.digital.misc.HuobiWSEventHandler;
+import com.yingwu.digital.bean.HuobiKLineData;
+import com.yingwu.digital.bean.HuobiTradeDetail;
+import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
+import com.yingwu.digital.bean.ws.HuobiWSKLineEvent;
+import com.yingwu.digital.bean.ws.HuobiWSTradeDetailEvent;
+import com.yingwu.digital.service.HuobiWSEventHandler;
 import com.yingwu.digital.service.HuobiApiService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.client.WebSocketClient;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service("ehoubiApiService")
 public class HuobiApiServiceImpl implements HuobiApiService {

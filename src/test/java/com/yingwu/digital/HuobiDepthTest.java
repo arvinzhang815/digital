@@ -1,9 +1,9 @@
 package com.yingwu.digital;
 
 
-import com.yingwu.digital.domain.HuobiOrderBook;
-import com.yingwu.digital.domain.ws.HuobiWSDepthEvent;
-import com.yingwu.digital.misc.HuobiWSEventHandler;
+import com.yingwu.digital.bean.HuobiOrderBook;
+import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
+import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package com.yingwu.digital.dao;
 
 
-import com.yingwu.digital.bean.POJO.TradeDetail;
+import com.yingwu.digital.bean.DTO.TradeDetail;
 
 public interface TradeDetailMapper {
     int deleteByPrimaryKey(Integer id);

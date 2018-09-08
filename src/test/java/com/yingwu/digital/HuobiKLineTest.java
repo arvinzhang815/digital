@@ -1,14 +1,12 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.bean.POJO.KLine;
-import com.yingwu.digital.domain.HuobiKLineData;
-import com.yingwu.digital.domain.ws.HuobiWSDepthEvent;
-import com.yingwu.digital.domain.ws.HuobiWSError;
-import com.yingwu.digital.domain.ws.HuobiWSKLineEvent;
-import com.yingwu.digital.misc.HuobiWSEventHandler;
+import com.yingwu.digital.bean.HuobiKLineData;
+import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
+import com.yingwu.digital.bean.ws.HuobiWSError;
+import com.yingwu.digital.bean.ws.HuobiWSKLineEvent;
+import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 

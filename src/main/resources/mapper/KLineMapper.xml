@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yingwu.digital.dao.KLineMapper" >
-  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.POJO.KLine" >
+  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.DTO.KLine" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="VARCHAR" />
     <result column="ts" property="ts" jdbcType="VARCHAR" />
@@ -33,7 +33,7 @@
     delete from t_kLine
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yingwu.digital.bean.POJO.KLine" >
+  <insert id="insert" parameterType="com.yingwu.digital.bean.DTO.KLine" >
     insert into t_kLine (id, channel, ts, 
       kLin_id, amount, count, 
       open, close, low, high, 
@@ -45,7 +45,7 @@
       #{vol,jdbcType=DECIMAL}, #{period,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR},
       #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.POJO.KLine" >
+  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.DTO.KLine" >
     insert into t_kLine
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -148,7 +148,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.POJO.KLine" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.DTO.KLine" >
     update t_kLine
     <set >
       <if test="channel != null" >
@@ -199,7 +199,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.POJO.KLine" >
+  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.DTO.KLine" >
     update t_kLine
     set channel = #{channel,jdbcType=VARCHAR},
       ts = #{ts,jdbcType=VARCHAR},

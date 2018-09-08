@@ -1,6 +1,6 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.domain.*;
+import com.yingwu.digital.bean.*;
 import com.yingwu.digital.util.HuobiUtil;
 import org.junit.Assert;
 import org.junit.Test;

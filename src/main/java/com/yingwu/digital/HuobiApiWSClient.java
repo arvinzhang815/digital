@@ -1,8 +1,8 @@
 package com.yingwu.digital;
 
 
-import com.yingwu.digital.misc.HuobiWSClientOption;
-import com.yingwu.digital.misc.HuobiWSEventHandler;
+import com.yingwu.digital.base.HuobiWSClientOption;
+import com.yingwu.digital.service.HuobiWSEventHandler;
 
 public interface HuobiApiWSClient {
 
