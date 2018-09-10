@@ -31,7 +31,7 @@ public class HoubiApiController {
             log.info("subKline请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subKline请求异常：" + e.toString());
-            e.printStackTrace();
+            apiResponse.setError();
         }
         return apiResponse;
     }
@@ -46,7 +46,7 @@ public class HoubiApiController {
             log.info("subDepth请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subDepth请求异常：" + e.toString());
-            e.printStackTrace();
+            apiResponse.setError();
         }
         return apiResponse;
     }
@@ -59,7 +59,7 @@ public class HoubiApiController {
             log.info("subTradeDetail请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subTradeDetail请求异常：" + e.toString());
-            e.printStackTrace();
+            apiResponse.setError();
         }
         return apiResponse;
     }
