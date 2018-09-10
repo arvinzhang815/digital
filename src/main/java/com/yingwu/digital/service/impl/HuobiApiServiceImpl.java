@@ -92,6 +92,8 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                 public void handleDepth(HuobiWSDepthEvent event) {
                     Depth depth = new Depth();
                     BeanUtils.copyProperties(event,depth);
+                    depth.setAsks(event.getAsks().toString());
+                    depth.setBids(event.getBids().toString());
                     log.info("深度数据"+depth.toString());
                     int count = depthMapper.insert(depth);
                     if(count < 1){
@@ -127,6 +129,8 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                     if(event.getDetails() != null && event.getDetails().size() > 0){
                         for(HuobiTradeDetail tmp : event.getDetails()){
                             BeanUtils.copyProperties(tmp,tradeDetail);
+                            tradeDetail.setTradeId(tmp.getId());
+                            tradeDetail.setTradeTs(tmp.getTs());
                             log.info("交易详情数据"+tradeDetail.toString());
                             int count = tradeDetailMapper.insert(tradeDetail);
                             if(count < 1){
