@@ -1,7 +1,7 @@
 package com.yingwu.digital.dao;
 
 
-import com.yingwu.digital.bean.DTO.MarketDetail;
+import com.yingwu.digital.bean.dto.MarketDetail;
 
 public interface MarketDetailMapper {
     int deleteByPrimaryKey(Integer id);

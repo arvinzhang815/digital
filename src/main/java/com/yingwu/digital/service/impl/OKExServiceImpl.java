@@ -16,8 +16,8 @@ import com.yingwu.digital.bean.ws.HuobiWSTradeDetailEvent;
 import com.yingwu.digital.dao.DepthMapper;
 import com.yingwu.digital.dao.KLineMapper;
 import com.yingwu.digital.dao.TradeDetailMapper;
-import com.yingwu.digital.service.HuobiApiService;
 import com.yingwu.digital.service.HuobiWSEventHandler;
+import com.yingwu.digital.service.OKExApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.client.WebSocketClient;
 
 @Service("ehoubiApiService")
-public class HuobiApiServiceImpl implements HuobiApiService {
+public class OKExServiceImpl implements OKExApiService {
     private WebSocketClient client = null;
 
     @Autowired
@@ -36,7 +36,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
     @Autowired
     private TradeDetailMapper tradeDetailMapper;
 
-    private static Logger log = LoggerFactory.getLogger(HuobiApiServiceImpl.class);
+    private static Logger log = LoggerFactory.getLogger(OKExServiceImpl.class);
     private static HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
 
     @Override

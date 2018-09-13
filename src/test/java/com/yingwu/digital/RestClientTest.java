@@ -1,6 +1,8 @@
 package com.yingwu.digital;
 
+import com.yingwu.digital.base.DigitalApiException;
 import com.yingwu.digital.bean.*;
+import com.yingwu.digital.client.huobi.HuobiApiRestClient;
 import com.yingwu.digital.util.HuobiUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +29,7 @@ public class RestClientTest {
         List<String> symbols = null;
         try {
             symbols = client.currencys();
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -53,7 +55,7 @@ public class RestClientTest {
                 System.out.println(s);
             }
 
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             e.printStackTrace();
         }
         Assert.assertFalse(symbols.isEmpty());
@@ -68,7 +70,7 @@ public class RestClientTest {
         HuobiOrderBook orderBook = null;
         try {
             orderBook = client.depth("manabtc", "step0");
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -77,7 +79,7 @@ public class RestClientTest {
     }
 
     // @Test
-    public void accountsTest() throws HuobiApiException {
+    public void accountsTest() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance(HUOBI_ACCESS_KEY, HUOBI_SECRET_KEY,HUOBI_PRIVATE_KEY);
         HuobiApiRestClient client = factory.newRestClient();
         List<HuobiAccount> accounts = client.accounts();
@@ -86,7 +88,7 @@ public class RestClientTest {
     }
 
     // @Test
-    public void balanceTest() throws HuobiApiException {
+    public void balanceTest() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance(HUOBI_ACCESS_KEY, HUOBI_SECRET_KEY,HUOBI_PRIVATE_KEY);
         HuobiApiRestClient client = factory.newRestClient();
         HuobiBalance ret = client.balance(HuobiAccount.ACCOUNT_TYPE_SPOT);
@@ -95,7 +97,7 @@ public class RestClientTest {
     }
 
     // @Test
-    public void balanceTest2() throws HuobiApiException {
+    public void balanceTest2() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance(HUOBI_ACCESS_KEY, HUOBI_SECRET_KEY,HUOBI_PRIVATE_KEY);
         HuobiApiRestClient client = factory.newRestClient();
         HuobiBalance ret = client.balance(964900L);
@@ -105,7 +107,7 @@ public class RestClientTest {
     /**
      * 641177079 & 641275426
      *
-     * @throws HuobiApiException
+     * @throws DigitalApiException
      */
     // @Test
     public void sendOrderTest() {
@@ -118,12 +120,12 @@ public class RestClientTest {
             client.cancelOrder(orderId);
             // logger.info("cancel order success id : {}", orderId);
 
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             // logger.error(e.getMessage());
         }
     }
     // @Test
-    public void cancelOrderTest() throws HuobiApiException {
+    public void cancelOrderTest() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance(HUOBI_ACCESS_KEY, HUOBI_SECRET_KEY,HUOBI_PRIVATE_KEY);
         HuobiApiRestClient client = factory.newRestClient();
         String orderId = client.cancelOrder("641275426");
@@ -137,7 +139,7 @@ public class RestClientTest {
             HuobiApiRestClient client = factory.newRestClient();
             HuobiOrderInfo orderDetail = client.orderInfo("641177079");
             // logger.info("order detail:{}", HuobiUtil.toJson(orderDetail));
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             // logger.error(e.getMessage());
         }
     }
@@ -149,7 +151,7 @@ public class RestClientTest {
             HuobiApiRestClient client = factory.newRestClient();
             HuobiOrderMatchResult matchResult = client.matchResult("641177079");
             // logger.info("matchResult:{}", HuobiUtil.toJson(matchResult));
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             // logger.error(e.getMessage());
         }
 
@@ -166,7 +168,7 @@ public class RestClientTest {
             List<HuobiOrderInfo> infos = client.orders("btcusdt", types,null,null,   states, null,0);
             System.out.println(HuobiUtil.toJson(infos));
             // logger.info("ordres:{}", HuobiUtil.toJson(infos));
-        } catch (HuobiApiException e) {
+        } catch (DigitalApiException e) {
             // logger.error(e.getMessage());
         }
     }

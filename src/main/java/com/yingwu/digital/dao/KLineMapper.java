@@ -1,7 +1,7 @@
 package com.yingwu.digital.dao;
 
 
-import com.yingwu.digital.bean.DTO.KLine;
+import com.yingwu.digital.bean.dto.KLine;
 import org.springframework.stereotype.Repository;
 
 @Repository

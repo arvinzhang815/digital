@@ -1,9 +1,12 @@
 package com.yingwu.digital;
 
+import com.yingwu.digital.base.DigitalApiException;
 import com.yingwu.digital.bean.HuobiKLineData;
 import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
 import com.yingwu.digital.bean.ws.HuobiWSError;
 import com.yingwu.digital.bean.ws.HuobiWSKLineEvent;
+import com.yingwu.digital.client.huobi.HuobiApiRestClient;
+import com.yingwu.digital.client.huobi.HuobiApiWSClient;
 import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +16,7 @@ import java.util.List;
 public class HuobiKLineTest {
 
     @Test
-    public void test() throws HuobiApiException {
+    public void test() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
         HuobiApiRestClient client = factory.newRestClient();
         List<HuobiKLineData> list = client.kline("btcusdt","5min",10);
@@ -24,7 +27,7 @@ public class HuobiKLineTest {
     }
 
     @Test
-    public void wsTest() throws HuobiApiException, InterruptedException {
+    public void wsTest() throws DigitalApiException, InterruptedException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
         HuobiApiWSClient client = factory.newWSClient();
         client.depth("btcusdt", "step0", new HuobiWSEventHandler() {

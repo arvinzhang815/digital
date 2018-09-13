@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yingwu.digital.dao.TradeDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.DTO.TradeDetail" >
+  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.dto.TradeDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="VARCHAR" />
     <result column="ts" property="ts" jdbcType="VARCHAR" />
@@ -32,7 +32,7 @@
     delete from t_trade_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yingwu.digital.bean.DTO.TradeDetail" >
+  <insert id="insert" parameterType="com.yingwu.digital.bean.dto.TradeDetail" >
     insert into t_trade_detail (id, channel, ts, 
       tick_id, trade_ts, msg_id, 
       amount, price, trade_time, 
@@ -44,7 +44,7 @@
       #{direction,jdbcType=VARCHAR}, #{tradeId,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR},
       #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.DTO.TradeDetail" >
+  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.dto.TradeDetail" >
     insert into t_trade_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -141,7 +141,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.DTO.TradeDetail" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.dto.TradeDetail" >
     update t_trade_detail
     <set >
       <if test="channel != null" >
@@ -189,7 +189,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.DTO.TradeDetail" >
+  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.dto.TradeDetail" >
     update t_trade_detail
     set channel = #{channel,jdbcType=VARCHAR},
       ts = #{ts,jdbcType=VARCHAR},

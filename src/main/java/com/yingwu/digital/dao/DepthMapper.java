@@ -1,7 +1,7 @@
 package com.yingwu.digital.dao;
 
 
-import com.yingwu.digital.bean.DTO.Depth;
+import com.yingwu.digital.bean.dto.Depth;
 import org.springframework.stereotype.Repository;
 
 @Repository

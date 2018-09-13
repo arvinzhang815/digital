@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yingwu.digital.dao.DepthMapper" >
-  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.DTO.Depth" >
+  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.dto.Depth" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="VARCHAR" />
     <result column="ts" property="ts" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
     delete from t_depth
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yingwu.digital.bean.DTO.Depth" >
+  <insert id="insert" parameterType="com.yingwu.digital.bean.dto.Depth" >
     insert into t_depth (id, channel, ts, 
       bids, asks, request_id, 
       ext1, ext2, ext3, type, 
@@ -37,7 +37,7 @@
       #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{symbol,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.DTO.Depth" >
+  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.dto.Depth" >
     insert into t_depth
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -110,7 +110,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.DTO.Depth" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.dto.Depth" >
     update t_depth
     <set >
       <if test="channel != null" >
@@ -146,7 +146,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.DTO.Depth" >
+  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.dto.Depth" >
     update t_depth
     set channel = #{channel,jdbcType=VARCHAR},
       ts = #{ts,jdbcType=VARCHAR},

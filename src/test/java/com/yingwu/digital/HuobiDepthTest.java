@@ -1,8 +1,11 @@
 package com.yingwu.digital;
 
 
+import com.yingwu.digital.base.DigitalApiException;
 import com.yingwu.digital.bean.HuobiOrderBook;
 import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
+import com.yingwu.digital.client.huobi.HuobiApiRestClient;
+import com.yingwu.digital.client.huobi.HuobiApiWSClient;
 import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +13,7 @@ import org.junit.Test;
 public class HuobiDepthTest {
 
     @Test
-    public void wsTest() throws HuobiApiException {
+    public void wsTest() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
         HuobiApiWSClient client = factory.newWSClient();
         client.depth("btcusdt", "step0", new HuobiWSEventHandler() {
@@ -23,7 +26,7 @@ public class HuobiDepthTest {
     }
 
     @Test
-    public void restTest() throws HuobiApiException {
+    public void restTest() throws DigitalApiException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
         HuobiApiRestClient client = factory.newRestClient();
         HuobiOrderBook ob = client.depth("eosbtc", "step0");

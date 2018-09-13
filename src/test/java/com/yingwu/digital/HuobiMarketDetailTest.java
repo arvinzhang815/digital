@@ -1,13 +1,15 @@
 package com.yingwu.digital;
 
+import com.yingwu.digital.base.DigitalApiException;
 import com.yingwu.digital.bean.ws.HuobiWSMarketDetailEvent;
+import com.yingwu.digital.client.huobi.HuobiApiWSClient;
 import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.junit.Test;
 
 public class HuobiMarketDetailTest {
 
     @Test
-    public void wsTest() throws HuobiApiException, InterruptedException {
+    public void wsTest() throws DigitalApiException, InterruptedException {
         HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
         HuobiApiWSClient client = factory.newWSClient();
 

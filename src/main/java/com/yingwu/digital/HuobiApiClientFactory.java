@@ -1,8 +1,10 @@
 package com.yingwu.digital;
 
 
-import com.yingwu.digital.service.impl.HuobiApiRestClientImpl;
-import com.yingwu.digital.service.impl.HuobiApiWSClientImpl;
+import com.yingwu.digital.client.huobi.HuobiApiRestClient;
+import com.yingwu.digital.client.huobi.HuobiApiWSClient;
+import com.yingwu.digital.client.huobi.HuobiApiRestClientImpl;
+import com.yingwu.digital.client.huobi.HuobiApiWSClientImpl;
 
 public class HuobiApiClientFactory {
 
