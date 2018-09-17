@@ -1,13 +1,15 @@
-package com.yingwu.digital.bean.dto;
+package com.yingwu.digital.bean.dto.huobi;
 
 import java.math.BigDecimal;
 
-public class MarketDetail {
+public class KLine {
     private Integer id;
+
+    private String channel;
 
     private String ts;
 
-    private String requestId;
+    private String klinId;
 
     private BigDecimal amount;
 
@@ -17,13 +19,13 @@ public class MarketDetail {
 
     private BigDecimal close;
 
-    private String tickId;
-
     private BigDecimal low;
 
     private BigDecimal high;
 
     private BigDecimal vol;
+
+    private String period;
 
     private String symbol;
 
@@ -41,6 +43,14 @@ public class MarketDetail {
         this.id = id;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel == null ? null : channel.trim();
+    }
+
     public String getTs() {
         return ts;
     }
@@ -49,12 +59,12 @@ public class MarketDetail {
         this.ts = ts == null ? null : ts.trim();
     }
 
-    public String getRequestId() {
-        return requestId;
+    public String getKlinId() {
+        return klinId;
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId == null ? null : requestId.trim();
+    public void setKlinId(String klinId) {
+        this.klinId = klinId == null ? null : klinId.trim();
     }
 
     public BigDecimal getAmount() {
@@ -89,14 +99,6 @@ public class MarketDetail {
         this.close = close;
     }
 
-    public String getTickId() {
-        return tickId;
-    }
-
-    public void setTickId(String tickId) {
-        this.tickId = tickId == null ? null : tickId.trim();
-    }
-
     public BigDecimal getLow() {
         return low;
     }
@@ -119,6 +121,14 @@ public class MarketDetail {
 
     public void setVol(BigDecimal vol) {
         this.vol = vol;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period == null ? null : period.trim();
     }
 
     public String getSymbol() {
@@ -155,18 +165,19 @@ public class MarketDetail {
 
     @Override
     public String toString() {
-        return "MarketDetail{" +
+        return "KLine{" +
                 "id=" + id +
+                ", channel='" + channel + '\'' +
                 ", ts='" + ts + '\'' +
-                ", requestId='" + requestId + '\'' +
+                ", klinId='" + klinId + '\'' +
                 ", amount=" + amount +
                 ", count=" + count +
                 ", open=" + open +
                 ", close=" + close +
-                ", tickId='" + tickId + '\'' +
                 ", low=" + low +
                 ", high=" + high +
                 ", vol=" + vol +
+                ", period='" + period + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", ext1='" + ext1 + '\'' +
                 ", ext2='" + ext2 + '\'' +

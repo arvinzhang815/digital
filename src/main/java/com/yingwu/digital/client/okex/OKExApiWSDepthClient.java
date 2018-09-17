@@ -26,9 +26,9 @@ public class OKExApiWSDepthClient extends AbsOKExApiWSClient<OKExDepthResponse> 
         if (StringUtils.isEmpty(symbol) || StringUtils.isEmpty(type) || handler == null) {
             throw new IllegalArgumentException("symbol|type|handler not valid");
         }
-        if (Arrays.stream(VALID_TYPES).noneMatch((e) -> e.equals(type))) {
-            throw new IllegalArgumentException("type is not valid.");
-        }
+//        if (Arrays.stream(VALID_TYPES).noneMatch((e) -> e.equals(type))) {
+//            throw new IllegalArgumentException("type is not valid.");
+//        }
         this.symbol = symbol;
         this.type = type;
     }
@@ -36,22 +36,22 @@ public class OKExApiWSDepthClient extends AbsOKExApiWSClient<OKExDepthResponse> 
     @Override
     protected OKExWSSub calcSub() {
         String id = UUID.randomUUID().toString();
-        OKExWSSub sub = new OKExWSSub(String.format("market.%s.depth.%s", symbol, type), id);
+        OKExWSSub sub = new OKExWSSub("addChannel",String.format("ok_sub_spot_%s_depth_%s", symbol,type));
         return sub;
     }
 
 
     @Override
     protected void doHandler(OKExDepthResponse resp) {
-        if (this.handler != null && resp != null && resp.tick != null) {
-            OKExDepthResponse event = new OKExDepthResponse();
-            event.setSymbol(symbol);
-            event.setType(type);
-            event.setTs(resp.ts);
-            event.setChannel(resp.getCh());
-            event.setAsks(resp.tick.asks);
-            event.setBids(resp.tick.bids);
-            this.handler.handleDepth(event);
+        if (this.handler != null && resp != null && resp.getDepthData() != null) {
+//            OKExDepthResponse event = new OKExDepthResponse();
+//            event.setSymbol(symbol);
+//            event.setType(type);
+//            event.setTs(resp.ts);
+//            event.setChannel(resp.getCh());
+//            event.setAsks(resp.tick.asks);
+//            event.setBids(resp.tick.bids);
+            this.handler.handleDepth(resp);
         }
     }
 

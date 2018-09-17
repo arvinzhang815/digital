@@ -1,6 +1,6 @@
 package com.yingwu.digital.client.huobi;
 
-import com.yingwu.digital.base.DigitalApiException;
+import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.base.DigitalWSClientOption;
 import com.yingwu.digital.service.HuobiWSEventHandler;
 import okhttp3.OkHttpClient;
@@ -51,43 +51,43 @@ public class HuobiApiWSClientImpl implements HuobiApiWSClient, Closeable {
     }
 
     @Override
-    public void depth(String symbol, String type, HuobiWSEventHandler handler) throws DigitalApiException {
+    public void depth(String symbol, String type, HuobiWSEventHandler handler) throws DigitalException {
         try {
             AbsHuobiApiWSClient client = new HuobiApiWSDepthClient(this, handler, symbol, type);
             client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
 
     @Override
-    public void kline(String symbol, String period, HuobiWSEventHandler handler) throws DigitalApiException {
+    public void kline(String symbol, String period, HuobiWSEventHandler handler) throws DigitalException {
 
         try {
             AbsHuobiApiWSClient client = new HuobiApiWSKLineClient(this, handler, symbol, period);
             client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
 
     }
 
     @Override
-    public void tradeDetail(String symbol, HuobiWSEventHandler handler) throws DigitalApiException {
+    public void tradeDetail(String symbol, HuobiWSEventHandler handler) throws DigitalException {
         try {
             AbsHuobiApiWSClient client = new HuobiApiWSTradeDetailClient(this, handler, symbol);
             client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
 
     @Override
-    public void marketDetail(String symbol, HuobiWSEventHandler handler) throws DigitalApiException {
+    public void marketDetail(String symbol, HuobiWSEventHandler handler) throws DigitalException {
         try {
             new HuobiApiWSMarketDetailClient(this, handler, symbol).start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
 

@@ -1,5 +1,11 @@
 package com.yingwu.digital.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
@@ -11,7 +17,7 @@ import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.Map;
 
-public class HuobiUtil {
+public class ApiUtil {
 
     private static final Gson gson = new Gson();
 
@@ -107,6 +113,27 @@ public class HuobiUtil {
         out.close();
         gzIn.close();
         return out.toString("utf-8");
+    }
+
+    public static String writeValue(Object obj) throws IOException {
+        return objectMapper.writeValueAsString(obj);
+    }
+
+    public static <T> T readValue(String s, TypeReference<T> ref) throws IOException {
+        return objectMapper.readValue(s, ref);
+    }
+
+    static final ObjectMapper objectMapper = createObjectMapper();
+
+    static ObjectMapper createObjectMapper() {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        // disabled features:
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
     }
 
 }

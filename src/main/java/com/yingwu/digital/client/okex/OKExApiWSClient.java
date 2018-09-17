@@ -1,9 +1,9 @@
 package com.yingwu.digital.client.okex;
 
 
-import com.yingwu.digital.base.DigitalApiException;
+import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.base.DigitalWSClientOption;
-import com.yingwu.digital.service.HuobiWSEventHandler;
+import com.yingwu.digital.service.OKExWSEventHandler;
 
 public interface OKExApiWSClient {
 
@@ -11,11 +11,11 @@ public interface OKExApiWSClient {
 
     DigitalWSClientOption getOption();
 
-    void depth(String symbol, String type, OKExApiWSClient handler) throws DigitalApiException;
+    void depth(String symbol, String type, OKExWSEventHandler handler) throws DigitalException;
 
-    void kline(String symbol, String period, OKExApiWSClient handler) throws DigitalApiException;
+    void kline(String symbol, String period, OKExWSEventHandler handler) throws DigitalException;
 
-    void ticker(String symbol, OKExApiWSClient handler) throws DigitalApiException;
+    void ticker(String symbol, OKExWSEventHandler handler) throws DigitalException;
 
-    void deals(String symbol, OKExApiWSClient handler) throws DigitalApiException;
+    void deals(String symbol, OKExWSEventHandler handler) throws DigitalException;
 }

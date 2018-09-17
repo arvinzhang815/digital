@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @date 2018/9/11
  **/
 public class OKExTickerResponse extends OKExBaseResponse{
-    private TickerData data;
+    private TickerData tickerData;
     private class TickerData{
         private String timestamp;
         private BigDecimal high;//最高价(最近的24小时)
@@ -116,18 +116,18 @@ public class OKExTickerResponse extends OKExBaseResponse{
         }
     }
 
-    public TickerData getData() {
-        return data;
+    public TickerData getTickerData() {
+        return tickerData;
     }
 
-    public void setData(TickerData data) {
-        this.data = data;
+    public void setTickerData(TickerData tickerData) {
+        this.tickerData = tickerData;
     }
 
     @Override
     public String toString() {
         return "TickerResponse{" +
-                "data=" + data.toString() +
+                "data=" + tickerData.toString() +
                 '}';
     }
 }

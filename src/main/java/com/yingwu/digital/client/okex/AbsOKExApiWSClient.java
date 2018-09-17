@@ -2,12 +2,11 @@ package com.yingwu.digital.client.okex;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yingwu.digital.base.DigitalConst;
-import com.yingwu.digital.bean.resp.okex.OKExWSResp;
+import com.yingwu.digital.bean.resp.okex.OKExBaseResponse;
 import com.yingwu.digital.bean.resp.okex.OKExWSSub;
 import com.yingwu.digital.bean.ws.HuobiWSError;
-import com.yingwu.digital.bean.ws.HuobiWSSub;
 import com.yingwu.digital.service.OKExWSEventHandler;
-import com.yingwu.digital.util.HuobiUtil;
+import com.yingwu.digital.util.ApiUtil;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -18,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Closeable;
 import java.io.IOException;
 
-public abstract class AbsOKExApiWSClient<T extends OKExWSResp> extends WebSocketListener implements Closeable {
+public abstract class AbsOKExApiWSClient<T extends OKExBaseResponse> extends WebSocketListener implements Closeable {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -38,7 +37,7 @@ public abstract class AbsOKExApiWSClient<T extends OKExWSResp> extends WebSocket
     }
 
     public void start() {
-        Request.Builder builder = new Request.Builder().url(DigitalConst.HUOBI_WS_URL);
+        Request.Builder builder = new Request.Builder().url(DigitalConst.OKEX_WS_URL);
         this.webSocket = client.getClient().newWebSocket(builder.build(), this);
     }
 
@@ -54,7 +53,7 @@ public abstract class AbsOKExApiWSClient<T extends OKExWSResp> extends WebSocket
         // String id = UUID.randomUUID().toString();
         // HuobiWSSub sub = new HuobiWSSub(String.format("market.%s.depth.%s", symbol, type), id);
         OKExWSSub sub = calcSub();
-        this.webSocket.send(HuobiUtil.toJson(sub));
+        this.webSocket.send(ApiUtil.toJson(sub));
     }
 
     @Override
@@ -68,7 +67,7 @@ public abstract class AbsOKExApiWSClient<T extends OKExWSResp> extends WebSocket
     public void onMessage(WebSocket webSocket, ByteString bytes) {
         String json = null;
         try {
-            json = HuobiUtil.uncompress(bytes.toByteArray());
+            json = ApiUtil.uncompress(bytes.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }

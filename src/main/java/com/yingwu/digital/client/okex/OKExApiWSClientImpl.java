@@ -1,12 +1,8 @@
 package com.yingwu.digital.client.okex;
 
-import com.yingwu.digital.base.DigitalApiException;
+import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.base.DigitalWSClientOption;
-import com.yingwu.digital.bean.resp.okex.OKExDealsResponse;
-import com.yingwu.digital.bean.resp.okex.OKExDepthResponse;
-import com.yingwu.digital.bean.resp.okex.OKExKLineResponse;
-import com.yingwu.digital.bean.resp.okex.OKExTickerResponse;
-import com.yingwu.digital.service.HuobiWSEventHandler;
+import com.yingwu.digital.service.OKExWSEventHandler;
 import okhttp3.OkHttpClient;
 
 import java.io.Closeable;
@@ -55,45 +51,45 @@ public class OKExApiWSClientImpl implements OKExApiWSClient, Closeable {
     }
 
     @Override
-    public void depth(String symbol, String type, OKExDepthResponse handler) throws DigitalApiException {
+    public void depth(String symbol, String type, OKExWSEventHandler handler) throws DigitalException {
         try {
             AbsOKExApiWSClient client = new OKExApiWSDepthClient(this, handler, symbol, type);
             client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
 
     @Override
-    public void kline(String symbol, String period, OKExKLineResponse handler) throws DigitalApiException {
-
+    public void kline(String symbol, String period, OKExWSEventHandler handler) throws DigitalException {
         try {
             AbsOKExApiWSClient client = new OKExApiWSKLineClient(this, handler, symbol, period);
             client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
-
     }
 
     @Override
-    public void ticker(String symbol, OKExTickerResponse handler) throws DigitalApiException {
+    public void ticker(String symbol, OKExWSEventHandler handler) throws DigitalException {
         try {
-            AbsOKExApiWSClient client = new OKExWSTradeDetailClient(this, handler, symbol);
+            AbsOKExApiWSClient client = new OKExApiWSTickerClient(this, handler, symbol);
             client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
 
     @Override
-    public void deals(String symbol, OKExDealsResponse handler) throws DigitalApiException {
+    public void deals(String symbol, OKExWSEventHandler handler) throws DigitalException {
         try {
-            new OKExApiWSMarketDetailClient(this, handler, symbol).start();
+            AbsOKExApiWSClient client = new OKExWSDealsClient(this, handler, symbol);
+            client.start();
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
+
 
     @Override
     public void close() throws IOException {

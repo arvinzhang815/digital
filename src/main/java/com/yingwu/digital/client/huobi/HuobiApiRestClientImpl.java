@@ -1,12 +1,12 @@
 package com.yingwu.digital.client.huobi;
 
 import com.yingwu.digital.base.DigitalApiError;
-import com.yingwu.digital.base.DigitalApiException;
 import com.yingwu.digital.base.DigitalConst;
+import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.bean.*;
 import com.yingwu.digital.bean.resp.huobi.*;
 import com.yingwu.digital.util.ApiSignature;
-import com.yingwu.digital.util.HuobiUtil;
+import com.yingwu.digital.util.ApiUtil;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +18,7 @@ import java.security.cert.CertificateException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class HuobiApiRestClientImpl implements HuobiApiRestClient {
+public class HuobiApiRestClientImpl implements HuobiApiRestClienttt {
 
     private static final String API_HOST = "api.huobi.pro";
 
@@ -115,7 +115,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         return err;
     }
 
-    private <T extends HuobiResp> T executeReq(Request request, Class<T> clazz) throws DigitalApiException {
+    private <T extends HuobiResp> T executeReq(Request request, Class<T> clazz) throws DigitalException {
         Call call = httpClient.newCall(request);
         try {
             Response response = call.execute();
@@ -124,29 +124,29 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
                 body = response.body();
                 if (body != null) {
                     String json = body.string();
-                    T t = HuobiUtil.fromJson(json, clazz);
+                    T t = ApiUtil.fromJson(json, clazz);
                     DigitalApiError err = parseError(t);
                     if (err != null) {
-                        throw new DigitalApiException(err);
+                        throw new DigitalException(err);
                     } else {
                         return t;
                     }
                 } else {
-                    throw new DigitalApiException("body error");
+                    throw new DigitalException("body error");
                 }
 
             } else {
                 body = response.body();
                 if (body != null) {
                     String json = body.string();
-                    HuobiResp resp = HuobiUtil.fromJson(json, HuobiResp.class);
+                    HuobiResp resp = ApiUtil.fromJson(json, HuobiResp.class);
                     DigitalApiError err = parseError(resp);
-                    throw new DigitalApiException(err);
+                    throw new DigitalException(err);
                 }
-                throw new DigitalApiException(String.format("execute error with url %s", request.url().url().toString()));
+                throw new DigitalException(String.format("execute error with url %s", request.url().url().toString()));
             }
         } catch (IOException e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
 
     }
@@ -165,7 +165,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
             builder.addHeader(e.getKey(), e.getValue());
         }
         if (post != null) {
-            String json = HuobiUtil.toJson(post);
+            String json = ApiUtil.toJson(post);
             RequestBody body = RequestBody.create(JSON, json);
             return builder.post(body).build();
         }
@@ -173,23 +173,23 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         return builder.build();
     }
 
-    private <T extends HuobiResp> T httpGetPost(String host, String path, Map<String, String> queryMap, Object post, Class<T> clazz) throws DigitalApiException {
-        String query = HuobiUtil.buildQuery(queryMap,this.apiSignature);
+    private <T extends HuobiResp> T httpGetPost(String host, String path, Map<String, String> queryMap, Object post, Class<T> clazz) throws DigitalException {
+        String query = ApiUtil.buildQuery(queryMap,this.apiSignature);
         String url = String.format("%s%s?%s", host, path, query);
         // System.out.println(url);
         return executeReq(buildRequest(url, post), clazz);
     }
 
-    private <T extends HuobiResp> T httpGet(String host, String path, Map<String, String> queryMap, Class<T> clazz) throws DigitalApiException {
+    private <T extends HuobiResp> T httpGet(String host, String path, Map<String, String> queryMap, Class<T> clazz) throws DigitalException {
         return httpGetPost(host, path, queryMap, null, clazz);
     }
 
-    private <T extends HuobiResp> T httpPost(String host, String path, Map<String, String> queryMap, Object post, Class<T> clazz) throws DigitalApiException {
+    private <T extends HuobiResp> T httpPost(String host, String path, Map<String, String> queryMap, Object post, Class<T> clazz) throws DigitalException {
         return httpGetPost(host, path, queryMap, post, clazz);
     }
 
     @Override
-    public List<HuobiKLineData> kline(String symbol, String period, int size) throws DigitalApiException {
+    public List<HuobiKLineData> kline(String symbol, String period, int size) throws DigitalException {
         if (StringUtils.isEmpty(symbol)) {
             throw new IllegalArgumentException("symbol");
         }
@@ -223,7 +223,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public HuobiTick tick(String symbol) throws DigitalApiException {
+    public HuobiTick tick(String symbol) throws DigitalException {
         if (StringUtils.isEmpty(symbol)) {
             throw new IllegalArgumentException("symbol");
         }
@@ -235,21 +235,21 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public List<String> currencys() throws DigitalApiException {
+    public List<String> currencys() throws DigitalException {
         String path = "/v1/common/currencys";
         HuobiCurrencysResp resp = httpGet(DigitalConst.MARKET_URL, path, null, HuobiCurrencysResp.class);
         return resp.getSymbols();
     }
 
     @Override
-    public List<HuobiSymbol> symbols() throws DigitalApiException {
+    public List<HuobiSymbol> symbols() throws DigitalException {
         String path = "/v1/common/symbols";
         HuobiSymbolResp resp = httpGet(DigitalConst.MARKET_URL, path, null, HuobiSymbolResp.class);
         return resp.getSymbols();
     }
 
     @Override
-    public HuobiOrderBook depth(String symbol, String type) throws DigitalApiException {
+    public HuobiOrderBook depth(String symbol, String type) throws DigitalException {
         String path = "/market/depth";
         Map<String, String> query = new HashMap<>();
         query.put("symbol", symbol.trim().toLowerCase());
@@ -263,14 +263,14 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         return book;
     }
 
-    private Map<String, String> buildQueryMap(Map<String, String> map, String method, String path) throws DigitalApiException {
+    private Map<String, String> buildQueryMap(Map<String, String> map, String method, String path) throws DigitalException {
         if(this.apiSignature == null){
             return this.buildQueryMap2(map,method,path);
         }
-        return this.apiSignature.createSignature(this.apiKey,this.secret,method,API_HOST,path,map);
+        return /*this.apiSignature.createSignature(this.apiKey,this.secret,method,API_HOST,path,map)*/ null;
     }
 
-    private Map<String, String> buildQueryMap2(Map<String, String> map, String method, String path) throws DigitalApiException {
+    private Map<String, String> buildQueryMap2(Map<String, String> map, String method, String path) throws DigitalException {
         TreeMap<String, String> query = new TreeMap<>();
         query.put("AccessKeyId", apiKey);
         query.put("SignatureMethod", "HmacSHA256");
@@ -286,24 +286,24 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
             }
         }
         try {
-            String data = String.format("%s\napi.huobi.pro\n%s\n%s", method, path, HuobiUtil.buildQuery(query,this.apiSignature));
-            String sign = HuobiUtil.hashMac256(data, secret);
+            String data = String.format("%s\napi.huobi.pro\n%s\n%s", method, path, ApiUtil.buildQuery(query,this.apiSignature));
+            String sign = ApiUtil.hashMac256(data, secret);
             query.put("Signature", sign);
             return query;
         } catch (Exception e) {
-            throw new DigitalApiException(e);
+            throw new DigitalException(e);
         }
     }
 
     @Override
-    public List<HuobiAccount> accounts() throws DigitalApiException {
+    public List<HuobiAccount> accounts() throws DigitalException {
         synchronized (accountsCacheLock) {
             if (accountsCache != null) {
                 return accountsCache;
             }
         }
         if (StringUtils.isEmpty(apiKey) || StringUtils.isEmpty(secret)) {
-            throw new DigitalApiException("key not exist");
+            throw new DigitalException("key not exist");
         }
         String path = "/v1/account/accounts";
         Map<String, String> query = buildQueryMap(null, METHOD_GET, path);
@@ -317,7 +317,7 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
         return new ArrayList<>();
     }
 
-    private HuobiAccount spotAccount() throws DigitalApiException {
+    private HuobiAccount spotAccount() throws DigitalException {
         List<HuobiAccount> accounts = null;
         synchronized (accountsCacheLock) {
             if (accountsCache != null) {
@@ -335,12 +335,12 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public HuobiBalance balance(String type) throws DigitalApiException {
+    public HuobiBalance balance(String type) throws DigitalException {
         if (StringUtils.isEmpty(apiKey) || StringUtils.isEmpty(secret)) {
-            throw new DigitalApiException("key not exist");
+            throw new DigitalException("key not exist");
         }
         if (!HuobiAccount.ACCOUNT_TYPE_SPOT.equals(type) && !HuobiAccount.ACCOUNT_TYPE_OTC.equals(type)) {
-            throw new DigitalApiException("invalid type");
+            throw new DigitalException("invalid type");
         }
         List<HuobiAccount> accounts;
         synchronized (accountsCacheLock) {
@@ -357,13 +357,13 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
             }
         }
         if (spotAccount == null) {
-            throw new DigitalApiException("spot account not found");
+            throw new DigitalException("spot account not found");
         }
         return balance(spotAccount.getId());
     }
 
     @Override
-    public HuobiBalance balance(long accountId) throws DigitalApiException {
+    public HuobiBalance balance(long accountId) throws DigitalException {
         String path = String.format("/v1/account/accounts/%d/balance", accountId);
         HashMap<String, String> map = new HashMap<>();
         map.put("account-id", String.valueOf(accountId));
@@ -373,9 +373,9 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public String sendOrder(String symbol, String price, String amount, HuobiOrderType type) throws DigitalApiException {
+    public String sendOrder(String symbol, String price, String amount, HuobiOrderType type) throws DigitalException {
         if (StringUtils.isEmpty(symbol)) {
-            throw new DigitalApiException("invalid symbol");
+            throw new DigitalException("invalid symbol");
         }
         symbol = symbol.trim().toLowerCase();
         final String path = "/v1/order/orders/place";
@@ -394,9 +394,9 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public String cancelOrder(String orderId) throws DigitalApiException {
+    public String cancelOrder(String orderId) throws DigitalException {
         if (StringUtils.isEmpty(orderId)) {
-            throw new DigitalApiException("invalid orderId");
+            throw new DigitalException("invalid orderId");
         }
         final String path = String.format("/v1/order/orders/%s/submitcancel", orderId);
         HashMap<String, String> map = new HashMap<>();
@@ -406,9 +406,9 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public HuobiOrderInfo orderInfo(String orderId) throws DigitalApiException {
+    public HuobiOrderInfo orderInfo(String orderId) throws DigitalException {
         if (StringUtils.isEmpty(orderId)) {
-            throw new DigitalApiException("invalid orderId");
+            throw new DigitalException("invalid orderId");
         }
         String path = String.format("/v1/order/orders/%s", orderId);
         HashMap<String, String> map = new HashMap<>();
@@ -418,9 +418,9 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
     }
 
     @Override
-    public HuobiOrderMatchResult matchResult(String orderId) throws DigitalApiException {
+    public HuobiOrderMatchResult matchResult(String orderId) throws DigitalException {
         if (StringUtils.isEmpty(orderId)) {
-            throw new DigitalApiException("invalid orderId");
+            throw new DigitalException("invalid orderId");
         }
         String path = String.format("/v1/order/orders/%s/matchresults", orderId);
         HashMap<String, String> map = new HashMap<>();
@@ -450,12 +450,12 @@ public class HuobiApiRestClientImpl implements HuobiApiRestClient {
                                        String endDate,
                                        List<HuobiOrderState> states,
                                        String fromOrderId,
-                                       int size) throws DigitalApiException {
+                                       int size) throws DigitalException {
         if (StringUtils.isEmpty(symbol)) {
-            throw new DigitalApiException("symbol is valid");
+            throw new DigitalException("symbol is valid");
         }
         if (states == null || states.isEmpty()) {
-            throw new DigitalApiException("states is empty");
+            throw new DigitalException("states is empty");
         }
         symbol = symbol.trim().toLowerCase();
         final String path = "/v1/order/orders";

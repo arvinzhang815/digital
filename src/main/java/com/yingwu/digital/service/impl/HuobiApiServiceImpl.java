@@ -1,21 +1,21 @@
 package com.yingwu.digital.service.impl;
 
-import com.yingwu.digital.HuobiApiClientFactory;
+import com.yingwu.digital.ApiClientFactory;
 import com.yingwu.digital.client.huobi.HuobiApiWSClient;
 import com.yingwu.digital.base.ApiRequest;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.base.DigitalException;
-import com.yingwu.digital.bean.dto.Depth;
-import com.yingwu.digital.bean.dto.KLine;
-import com.yingwu.digital.bean.dto.TradeDetail;
+import com.yingwu.digital.bean.dto.huobi.Depth;
+import com.yingwu.digital.bean.dto.huobi.KLine;
+import com.yingwu.digital.bean.dto.huobi.TradeDetail;
 import com.yingwu.digital.bean.HuobiKLineData;
 import com.yingwu.digital.bean.HuobiTradeDetail;
 import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
 import com.yingwu.digital.bean.ws.HuobiWSKLineEvent;
 import com.yingwu.digital.bean.ws.HuobiWSTradeDetailEvent;
-import com.yingwu.digital.dao.DepthMapper;
-import com.yingwu.digital.dao.KLineMapper;
-import com.yingwu.digital.dao.TradeDetailMapper;
+import com.yingwu.digital.dao.huobi.HuobiDepthMapper;
+import com.yingwu.digital.dao.huobi.HuobiKLineMapper;
+import com.yingwu.digital.dao.huobi.HuobiTradeDetailMapper;
 import com.yingwu.digital.service.HuobiApiService;
 import com.yingwu.digital.service.HuobiWSEventHandler;
 import org.slf4j.Logger;
@@ -30,14 +30,14 @@ public class HuobiApiServiceImpl implements HuobiApiService {
     private WebSocketClient client = null;
 
     @Autowired
-    private KLineMapper kLineMapper;
+    private HuobiKLineMapper huobiKLineMapper;
     @Autowired
-    private DepthMapper depthMapper;
+    private HuobiDepthMapper huobiDepthMapper;
     @Autowired
-    private TradeDetailMapper tradeDetailMapper;
+    private HuobiTradeDetailMapper huobiTradeDetailMapper;
 
     private static Logger log = LoggerFactory.getLogger(HuobiApiServiceImpl.class);
-    private static HuobiApiClientFactory factory = HuobiApiClientFactory.newInstance();
+    private static ApiClientFactory factory = ApiClientFactory.newInstance();
 
     @Override
     public ApiResponse subKline(ApiRequest apiRequest) throws DigitalException {
@@ -55,7 +55,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                     BeanUtils.copyProperties(data,kLine);
                     kLine.setKlinId(data.getId());
                     log.info("K线数据"+kLine.toString());
-                    int count = kLineMapper.insert(kLine);
+                    int count = huobiKLineMapper.insert(kLine);
                     if(count < 1){
                         log.info("K线数据入库出错" + event.toString());
                         throw new DigitalException("K线数据入库出错" + event.toString());
@@ -95,7 +95,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                     depth.setAsks(event.getAsks().toString());
                     depth.setBids(event.getBids().toString());
                     log.info("深度数据"+depth.toString());
-                    int count = depthMapper.insert(depth);
+                    int count = huobiDepthMapper.insert(depth);
                     if(count < 1){
                         log.info("深度数据入库异常" + event.toString());
                         throw new DigitalException("深度数据入库异常" + event.toString());
@@ -132,7 +132,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                             tradeDetail.setTradeId(tmp.getId());
                             tradeDetail.setTradeTs(tmp.getTs());
                             log.info("交易详情数据"+tradeDetail.toString());
-                            int count = tradeDetailMapper.insert(tradeDetail);
+                            int count = huobiTradeDetailMapper.insert(tradeDetail);
                             if(count < 1){
                                 log.info("交易详情入库异常" + event.toString());
                                 throw new DigitalException("交易详情入库异常" + event.toString());

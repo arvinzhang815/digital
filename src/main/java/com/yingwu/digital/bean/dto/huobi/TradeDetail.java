@@ -1,4 +1,4 @@
-package com.yingwu.digital.bean.dto;
+package com.yingwu.digital.bean.dto.huobi;
 
 import java.math.BigDecimal;
 

@@ -6,7 +6,7 @@ import com.yingwu.digital.bean.resp.huobi.HuobiWSResp;
 import com.yingwu.digital.bean.ws.HuobiWSError;
 import com.yingwu.digital.bean.ws.HuobiWSSub;
 import com.yingwu.digital.service.HuobiWSEventHandler;
-import com.yingwu.digital.util.HuobiUtil;
+import com.yingwu.digital.util.ApiUtil;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -53,7 +53,7 @@ public abstract class AbsHuobiApiWSClient<T extends HuobiWSResp> extends WebSock
         // String id = UUID.randomUUID().toString();
         // HuobiWSSub sub = new HuobiWSSub(String.format("market.%s.depth.%s", symbol, type), id);
         HuobiWSSub sub = calcSub();
-        this.webSocket.send(HuobiUtil.toJson(sub));
+        this.webSocket.send(ApiUtil.toJson(sub));
     }
 
     @Override
@@ -67,7 +67,7 @@ public abstract class AbsHuobiApiWSClient<T extends HuobiWSResp> extends WebSock
     public void onMessage(WebSocket webSocket, ByteString bytes) {
         String json = null;
         try {
-            json = HuobiUtil.uncompress(bytes.toByteArray());
+            json = ApiUtil.uncompress(bytes.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package com.yingwu.digital.bean.dto;
+package com.yingwu.digital.bean.dto.huobi;
 
 public class Depth {
     private Integer id;

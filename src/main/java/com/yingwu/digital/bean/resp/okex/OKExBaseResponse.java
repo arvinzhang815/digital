@@ -7,6 +7,35 @@ package com.yingwu.digital.bean.resp.okex;
 public class OKExBaseResponse {
     private String channel;
 
+    public String result;
+
+    public String errorcode;
+
+    public String data;
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getErrorcode() {
+        return errorcode;
+    }
+
+    public void setErrorcode(String errorcode) {
+        this.errorcode = errorcode;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
     public String getChannel() {
         return channel;
     }
@@ -19,6 +48,9 @@ public class OKExBaseResponse {
     public String toString() {
         return "OKExBaseResponse{" +
                 "channel='" + channel + '\'' +
+                ", result='" + result + '\'' +
+                ", errorcode='" + errorcode + '\'' +
+                ", data='" + data + '\'' +
                 '}';
     }
 }

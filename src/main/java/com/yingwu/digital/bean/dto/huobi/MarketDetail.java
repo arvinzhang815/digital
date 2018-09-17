@@ -1,15 +1,13 @@
-package com.yingwu.digital.bean.dto;
+package com.yingwu.digital.bean.dto.huobi;
 
 import java.math.BigDecimal;
 
-public class KLine {
+public class MarketDetail {
     private Integer id;
-
-    private String channel;
 
     private String ts;
 
-    private String klinId;
+    private String requestId;
 
     private BigDecimal amount;
 
@@ -19,13 +17,13 @@ public class KLine {
 
     private BigDecimal close;
 
+    private String tickId;
+
     private BigDecimal low;
 
     private BigDecimal high;
 
     private BigDecimal vol;
-
-    private String period;
 
     private String symbol;
 
@@ -43,14 +41,6 @@ public class KLine {
         this.id = id;
     }
 
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel == null ? null : channel.trim();
-    }
-
     public String getTs() {
         return ts;
     }
@@ -59,12 +49,12 @@ public class KLine {
         this.ts = ts == null ? null : ts.trim();
     }
 
-    public String getKlinId() {
-        return klinId;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setKlinId(String klinId) {
-        this.klinId = klinId == null ? null : klinId.trim();
+    public void setRequestId(String requestId) {
+        this.requestId = requestId == null ? null : requestId.trim();
     }
 
     public BigDecimal getAmount() {
@@ -99,6 +89,14 @@ public class KLine {
         this.close = close;
     }
 
+    public String getTickId() {
+        return tickId;
+    }
+
+    public void setTickId(String tickId) {
+        this.tickId = tickId == null ? null : tickId.trim();
+    }
+
     public BigDecimal getLow() {
         return low;
     }
@@ -121,14 +119,6 @@ public class KLine {
 
     public void setVol(BigDecimal vol) {
         this.vol = vol;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period == null ? null : period.trim();
     }
 
     public String getSymbol() {
@@ -165,19 +155,18 @@ public class KLine {
 
     @Override
     public String toString() {
-        return "KLine{" +
+        return "MarketDetail{" +
                 "id=" + id +
-                ", channel='" + channel + '\'' +
                 ", ts='" + ts + '\'' +
-                ", klinId='" + klinId + '\'' +
+                ", requestId='" + requestId + '\'' +
                 ", amount=" + amount +
                 ", count=" + count +
                 ", open=" + open +
                 ", close=" + close +
+                ", tickId='" + tickId + '\'' +
                 ", low=" + low +
                 ", high=" + high +
                 ", vol=" + vol +
-                ", period='" + period + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", ext1='" + ext1 + '\'' +
                 ", ext2='" + ext2 + '\'' +

@@ -5,7 +5,7 @@ package com.yingwu.digital.bean.resp.okex;
  * @date 2018/9/11
  **/
 public class OKExDepthResponse extends OKExBaseResponse {
-    private DepthData data;
+    private DepthData depthData;
     private class DepthData{
         private String timestamp;
         private String asks;//卖方深度
@@ -45,18 +45,18 @@ public class OKExDepthResponse extends OKExBaseResponse {
         }
     }
 
-    public DepthData getData() {
-        return data;
+    public DepthData getDepthData() {
+        return depthData;
     }
 
-    public void setData(DepthData data) {
-        this.data = data;
+    public void setDepthData(DepthData depthData) {
+        this.depthData = depthData;
     }
 
     @Override
     public String toString() {
-        return "DepthResponse{" +
-                "data=" + data.toString() +
+        return "OKExDepthResponse{" +
+                "depthData=" + depthData +
                 '}';
     }
 }

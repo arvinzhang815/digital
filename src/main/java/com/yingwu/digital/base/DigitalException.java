@@ -31,5 +31,11 @@ public class DigitalException extends RuntimeException{
         return errorMessage;
     }
 
+    public DigitalException(DigitalApiError error) {
+        super(error.toString());
+    }
 
+    public DigitalException(Throwable cause) {
+        super(cause);
+    }
 }

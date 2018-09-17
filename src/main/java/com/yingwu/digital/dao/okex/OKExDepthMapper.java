@@ -1,11 +1,11 @@
-package com.yingwu.digital.dao;
+package com.yingwu.digital.dao.okex;
 
 
-import com.yingwu.digital.bean.dto.Depth;
+import com.yingwu.digital.bean.dto.okex.Depth;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DepthMapper {
+public interface OKExDepthMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Depth record);

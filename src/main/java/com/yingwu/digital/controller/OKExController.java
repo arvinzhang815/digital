@@ -3,6 +3,7 @@ package com.yingwu.digital.controller;
 import com.yingwu.digital.base.ApiRequest;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.service.HuobiApiService;
+import com.yingwu.digital.service.OKExApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class OKExController {
 
     @Autowired
-    @Qualifier("ehoubiApiService")
-    private HuobiApiService houbiApiService;
+    @Qualifier("eokexApiService")
+    private OKExApiService okexApiService;
 
     private static Logger log = LoggerFactory.getLogger(OKExController.class);
 
@@ -26,7 +27,7 @@ public class OKExController {
         log.info("subKline请求参数：" + apiRequest.toString());
         ApiResponse  apiResponse = new ApiResponse();
         try {
-            apiResponse = houbiApiService.subKline(apiRequest);
+            apiResponse = okexApiService.subKline(apiRequest);
             log.info("subKline请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subKline请求异常：" + e.toString());
@@ -41,7 +42,7 @@ public class OKExController {
         ApiResponse  apiResponse = new ApiResponse();
         try {
 
-            apiResponse = houbiApiService.subDepth(apiRequest);
+            apiResponse = okexApiService.subDepth(apiRequest);
             log.info("subDepth请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subDepth请求异常：" + e.toString());
@@ -49,15 +50,28 @@ public class OKExController {
         }
         return apiResponse;
     }
-    @RequestMapping("/subtradedetail")
-    public ApiResponse subTradeDetail(@RequestBody ApiRequest apiRequest){
-        log.info("subTradeDetail请求参数：" + apiRequest.toString());
+    @RequestMapping("/subticker")
+    public ApiResponse subTicker(@RequestBody ApiRequest apiRequest){
+        log.info("subTicker请求参数：" + apiRequest.toString());
         ApiResponse  apiResponse = new ApiResponse();
         try {
-            apiResponse = houbiApiService.subTradeDetail(apiRequest);
-            log.info("subTradeDetail请求返回值：" + apiResponse.toString());
+            apiResponse = okexApiService.subTicker(apiRequest);
+            log.info("subTicker请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
-            log.info("subTradeDetail请求异常：" + e.toString());
+            log.info("subTicker请求异常：" + e.toString());
+            apiResponse.setError();
+        }
+        return apiResponse;
+    }
+    @RequestMapping("/subdeals")
+    public ApiResponse subDeals(@RequestBody ApiRequest apiRequest){
+        log.info("subDeals请求参数：" + apiRequest.toString());
+        ApiResponse  apiResponse = new ApiResponse();
+        try {
+            apiResponse = okexApiService.subDeals(apiRequest);
+            log.info("subDeals请求返回值：" + apiResponse.toString());
+        } catch (Exception e) {
+            log.info("subDeals请求异常：" + e.toString());
             apiResponse.setError();
         }
         return apiResponse;

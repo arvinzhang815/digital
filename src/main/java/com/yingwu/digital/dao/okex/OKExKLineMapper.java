@@ -1,11 +1,11 @@
-package com.yingwu.digital.dao;
+package com.yingwu.digital.dao.okex;
 
 
-import com.yingwu.digital.bean.dto.KLine;
+import com.yingwu.digital.bean.dto.okex.KLine;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface KLineMapper {
+public interface OKExKLineMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(KLine record);
