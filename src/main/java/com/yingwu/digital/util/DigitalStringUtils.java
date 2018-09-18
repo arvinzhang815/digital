@@ -1,0 +1,18 @@
+package com.yingwu.digital.util;
+
+/**
+ * @author Created by: zhangbingbing
+ * @date 2018/9/18
+ **/
+public class DigitalStringUtils {
+    public static boolean isEmpty(String str) {
+        if(str == null)
+            return true;
+        String tempStr = str.trim();
+        if(tempStr.length() == 0)
+            return true;
+        if(tempStr.equals("null"))
+            return true;
+        return false;
+    }
+}

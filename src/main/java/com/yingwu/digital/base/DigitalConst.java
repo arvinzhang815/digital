@@ -5,6 +5,7 @@ public class DigitalConst {
 
     public static final String MARKET_URL = "https://api.huobi.pro";
     public static final String MARKET_URL_H = "https://api.hadax.com";
+    public static final String OKEx_URL = "https://www.okcoin.com";
 
     public static final String TRADE_URL = "https://api.huobi.pro";
 
