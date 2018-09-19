@@ -1,6 +1,6 @@
 package com.yingwu.digital.controller;
 
-import com.yingwu.digital.base.ApiRequest;
+import com.yingwu.digital.bean.request.huobi.HuobiWSApiRequest;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.service.HuobiApiService;
 import org.slf4j.Logger;
@@ -22,11 +22,11 @@ public class HuobiApiController {
     private static Logger log = LoggerFactory.getLogger(HuobiApiController.class);
 
     @RequestMapping("/subkline")
-    public ApiResponse subKline(@RequestBody ApiRequest apiRequest){
-        log.info("subKline请求参数：" + apiRequest.toString());
+    public ApiResponse subKline(@RequestBody HuobiWSApiRequest huobiWSApiRequest){
+        log.info("subKline请求参数：" + huobiWSApiRequest.toString());
         ApiResponse  apiResponse = new ApiResponse();
         try {
-            apiResponse = houbiApiService.subKline(apiRequest);
+            apiResponse = houbiApiService.subKline(huobiWSApiRequest);
             log.info("subKline请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subKline请求异常：" + e.toString());
@@ -36,12 +36,12 @@ public class HuobiApiController {
     }
 
     @RequestMapping("/subdepth")
-    public ApiResponse subDepth(@RequestBody ApiRequest apiRequest){
-        log.info("subDepth请求参数：" + apiRequest.toString());
+    public ApiResponse subDepth(@RequestBody HuobiWSApiRequest huobiWSApiRequest){
+        log.info("subDepth请求参数：" + huobiWSApiRequest.toString());
         ApiResponse  apiResponse = new ApiResponse();
         try {
 
-            apiResponse = houbiApiService.subDepth(apiRequest);
+            apiResponse = houbiApiService.subDepth(huobiWSApiRequest);
             log.info("subDepth请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subDepth请求异常：" + e.toString());
@@ -50,11 +50,11 @@ public class HuobiApiController {
         return apiResponse;
     }
     @RequestMapping("/subtradedetail")
-    public ApiResponse subTradeDetail(@RequestBody ApiRequest apiRequest){
-        log.info("subTradeDetail请求参数：" + apiRequest.toString());
+    public ApiResponse subTradeDetail(@RequestBody HuobiWSApiRequest huobiWSApiRequest){
+        log.info("subTradeDetail请求参数：" + huobiWSApiRequest.toString());
         ApiResponse  apiResponse = new ApiResponse();
         try {
-            apiResponse = houbiApiService.subTradeDetail(apiRequest);
+            apiResponse = houbiApiService.subTradeDetail(huobiWSApiRequest);
             log.info("subTradeDetail请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subTradeDetail请求异常：" + e.toString());

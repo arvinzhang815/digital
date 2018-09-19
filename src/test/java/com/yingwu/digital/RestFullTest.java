@@ -1,13 +1,13 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.bean.dto.huobi.Symbol;
+import com.yingwu.digital.bean.dto.huobi.Account;
+import com.yingwu.digital.bean.dto.huobi.HuobiBalance;
 import com.yingwu.digital.bean.resp.huobi.*;
 import com.yingwu.digital.client.huobi.HuobiApiRestClient;
 import com.yingwu.digital.util.ApiUtil;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +22,11 @@ public class RestFullTest {
     public void restFullTest(){
         HuobiApiRestClient client = new HuobiApiRestClient(API_KEY, API_SECRET);
         // get symbol list:
-        BalanceResponse response = client.balance("4697417");
+        List<Account> response = client.getAccounts();
+        MatchresultsOrdersDetailResponse responsew = client.matchresult();
+        //Account{id='4604531', type='spot', state='working', userid='null'}Account{id='4604531', type='spot', state='working', userid='null'}
         print(response);
+        print(responsew);
 
         //获取 K 线
         //------------------------------------------------------ kline -------------------------------------------------------

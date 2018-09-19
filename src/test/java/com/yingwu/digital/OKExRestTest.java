@@ -16,8 +16,8 @@ public class OKExRestTest {
     @Test
     public void oktest(){
 
-        String api_key = "d9f2fb20-5ee9-47cb-85ff-59fcc98b47fd";  //OKCoin申请的apiKey
-        String secret_key = "632E0D5367D574CE61A6E28394E68E84";  //OKCoin 申请的secret_key
+        String api_key = "d136619b-d98d-4e71-992d-14bda9294d43";  //OKCoin申请的apiKey
+        String secret_key = "83DA90035C7D9B769713F10DF473A288";  //OKCoin 申请的secret_key
         String url_prex = "https://www.okcoin.com";  //注意：请求URL 国际站https://www.okcoin.com ; 国内站https://www.okcoin.cn
 
         /**

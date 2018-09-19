@@ -1,7 +1,7 @@
 package com.yingwu.digital.service.impl;
 
 import com.yingwu.digital.ApiClientFactory;
-import com.yingwu.digital.base.ApiRequest;
+import com.yingwu.digital.bean.request.huobi.HuobiWSApiRequest;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.bean.dto.okex.Deals;
@@ -45,13 +45,13 @@ public class OKExServiceImpl implements OKExApiService {
     private static ApiClientFactory factory = ApiClientFactory.newInstance();
 
     @Override
-    public ApiResponse subKline(ApiRequest apiRequest) throws DigitalException {
+    public ApiResponse subKline(HuobiWSApiRequest huobiWSApiRequest) throws DigitalException {
         ApiResponse response = new ApiResponse();
         OKExApiWSClient client = factory.newOKExWSClient();
         try {
 //            apiRequest = getSymbolBySub(apiRequest);
-            log.info("开始订阅K线（KLine）时apiRequest：" + apiRequest.toString());
-            client.kline(apiRequest.getSymbol(), apiRequest.getType(), new OKExWSEventHandler() {
+            log.info("开始订阅K线（KLine）时apiRequest：" + huobiWSApiRequest.toString());
+            client.kline(huobiWSApiRequest.getSymbol(), huobiWSApiRequest.getType(), new OKExWSEventHandler() {
                 @Override
                 public void handleKLine(OKExKLineResponse event) {
                     KLine kLine = new KLine();
@@ -75,21 +75,21 @@ public class OKExServiceImpl implements OKExApiService {
         return response;
     }
 
-    private ApiRequest getSymbolBySub(ApiRequest apiRequest) {
-        String[] beginIndex = apiRequest.getSub().split("\\.");
-        apiRequest.setSymbol(beginIndex[1]);
-        apiRequest.setType(beginIndex[3]);
-        return apiRequest;
+    private HuobiWSApiRequest getSymbolBySub(HuobiWSApiRequest huobiWSApiRequest) {
+        String[] beginIndex = huobiWSApiRequest.getSub().split("\\.");
+        huobiWSApiRequest.setSymbol(beginIndex[1]);
+        huobiWSApiRequest.setType(beginIndex[3]);
+        return huobiWSApiRequest;
     }
 
     @Override
-    public ApiResponse subDepth(ApiRequest apiRequest) throws DigitalException {
+    public ApiResponse subDepth(HuobiWSApiRequest huobiWSApiRequest) throws DigitalException {
         ApiResponse response = new ApiResponse();
         OKExApiWSClient client = factory.newOKExWSClient();
         try {
-            apiRequest = getSymbolBySub(apiRequest);
-            log.info("开始订阅深度（depth）时apiRequest：" + apiRequest.toString());
-            client.depth(apiRequest.getSymbol(), apiRequest.getType(), new OKExWSEventHandler() {
+            huobiWSApiRequest = getSymbolBySub(huobiWSApiRequest);
+            log.info("开始订阅深度（depth）时apiRequest：" + huobiWSApiRequest.toString());
+            client.depth(huobiWSApiRequest.getSymbol(), huobiWSApiRequest.getType(), new OKExWSEventHandler() {
                 @Override
                 public void handleDepth(OKExDepthResponse event) {
                     Depth depth = new Depth();
@@ -113,13 +113,13 @@ public class OKExServiceImpl implements OKExApiService {
     }
 
     @Override
-    public ApiResponse subDeals(ApiRequest apiRequest) throws DigitalException {
+    public ApiResponse subDeals(HuobiWSApiRequest huobiWSApiRequest) throws DigitalException {
         ApiResponse response = new ApiResponse();
         OKExApiWSClient client = factory.newOKExWSClient();
         try {
-            apiRequest = getSymbolBySub(apiRequest);
-            log.info("开始订阅交易（deals)时apiRequest：" + apiRequest.toString());
-            client.deals(apiRequest.getSymbol(), new OKExWSEventHandler() {
+            huobiWSApiRequest = getSymbolBySub(huobiWSApiRequest);
+            log.info("开始订阅交易（deals)时apiRequest：" + huobiWSApiRequest.toString());
+            client.deals(huobiWSApiRequest.getSymbol(), new OKExWSEventHandler() {
                 @Override
                 public void handleDeals(OKExDealsResponse event) {
                     Deals deals = new Deals();
@@ -148,13 +148,13 @@ public class OKExServiceImpl implements OKExApiService {
     }
 
     @Override
-    public ApiResponse subTicker(ApiRequest apiRequest) throws DigitalException {
+    public ApiResponse subTicker(HuobiWSApiRequest huobiWSApiRequest) throws DigitalException {
         ApiResponse response = new ApiResponse();
         OKExApiWSClient client = factory.newOKExWSClient();
         try {
-            apiRequest = getSymbolBySub(apiRequest);
-            log.info("开始订阅行情（Ticker）时apiRequest：" + apiRequest.toString());
-            client.ticker(apiRequest.getSymbol(), new OKExWSEventHandler() {
+            huobiWSApiRequest = getSymbolBySub(huobiWSApiRequest);
+            log.info("开始订阅行情（Ticker）时apiRequest：" + huobiWSApiRequest.toString());
+            client.ticker(huobiWSApiRequest.getSymbol(), new OKExWSEventHandler() {
 
                 @Override
                 public void handleTicker(OKExTickerResponse event) {

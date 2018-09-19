@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.yingwu.digital.base.DigitalConst;
 import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.bean.dto.huobi.Account;
-import com.yingwu.digital.bean.dto.huobi.Balance;
+import com.yingwu.digital.bean.dto.huobi.HuobiBalance;
 import com.yingwu.digital.bean.dto.huobi.Symbol;
 import com.yingwu.digital.bean.resp.ApiResponse;
 import com.yingwu.digital.bean.resp.huobi.*;
@@ -13,15 +13,15 @@ import com.yingwu.digital.util.ApiUtil;
 import okhttp3.*;
 
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -100,7 +100,7 @@ public class HuobiApiRestClient {
      * GET /v1/common/symbols 查询系统支持的所有交易对及精度
      *
      * @param symbol
-     * @return
+     * @returnx
      */
     public SymbolsResponse symbols(String symbol) {
         HashMap map = new HashMap();
@@ -153,7 +153,7 @@ public class HuobiApiRestClient {
      * @return
      */
     public BalanceResponse balance(String accountId) {
-        BalanceResponse resp = get("/v1/account/accounts/" + accountId + "/balance", null, new TypeReference<BalanceResponse<Balance>>() {
+        BalanceResponse resp = get("/v1/account/accounts/" + accountId + "/balance", null, new TypeReference<BalanceResponse<HuobiBalance>>() {
         });
         return resp;
     }
@@ -172,7 +172,15 @@ public class HuobiApiRestClient {
         return resp;
     }
     public MatchresultsOrdersDetailResponse matchresult() {
-        MatchresultsOrdersDetailResponse resp = get("/v1/order/matchresults", null, new TypeReference<MatchresultsOrdersDetailResponse>() {
+        HashMap map = new HashMap();
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.DATE,-1);
+        Date time=cal.getTime();
+        String endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(time);
+        String startDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        map.put("start-date", startDate);
+        map.put("end-date", endDate);
+        MatchresultsOrdersDetailResponse resp = get("/v1/order/matchresults", map, new TypeReference<MatchresultsOrdersDetailResponse>() {
         });
         return resp;
     }

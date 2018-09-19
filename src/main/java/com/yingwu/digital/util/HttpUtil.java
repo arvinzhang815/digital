@@ -122,7 +122,7 @@ public class HttpUtil {
     }
 
     public String requestHttpPost(String url_prex,String url,Map<String,String> params) throws HttpException, IOException{
-        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+//        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 
         IdleConnectionMonitor();
         url=url_prex+url;

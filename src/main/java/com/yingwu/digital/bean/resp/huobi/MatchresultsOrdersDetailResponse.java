@@ -41,4 +41,14 @@ public class MatchresultsOrdersDetailResponse<T> {
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
     }
+
+    @Override
+    public String toString() {
+        return "MatchresultsOrdersDetailResponse{" +
+                "status='" + status + '\'' +
+                ", errCode='" + errCode + '\'' +
+                ", errMsg='" + errMsg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

@@ -1,4 +1,4 @@
-package com.yingwu.digital.base;
+package com.yingwu.digital.bean.request.huobi;
 
 import com.yingwu.digital.util.IdUtil;
 
@@ -6,7 +6,7 @@ import com.yingwu.digital.util.IdUtil;
  * @author Created by: zhangbingbing
  * @date 2018/9/8
  **/
-public class ApiRequest {
+public class HuobiWSApiRequest {
     private String sub;
     private String id = IdUtil.getInstance().longPK()+"";;
     private String req;

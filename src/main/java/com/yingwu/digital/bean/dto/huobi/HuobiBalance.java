@@ -1,15 +1,17 @@
 package com.yingwu.digital.bean.dto.huobi;
 
+import java.util.List;
+
 /**
  * @author Created by: zhangbingbing
  * @date 2018/9/17
  **/
-public class Balance<T> {
+public class HuobiBalance<T> {
     private String id;
     private String type;
     private String state;
     private String userid;
-    private T list;
+    private List<HuobiBalanceCurrency> list;
 
     public String getId() {
         return id;
@@ -43,11 +45,11 @@ public class Balance<T> {
         this.userid = userid;
     }
 
-    public T getList() {
+    public List<HuobiBalanceCurrency> getList() {
         return list;
     }
 
-    public void setList(T list) {
+    public void setList(List<HuobiBalanceCurrency> list) {
         this.list = list;
     }
 }

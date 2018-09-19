@@ -1,4 +1,4 @@
-package com.yingwu.digital.bean;
+package com.yingwu.digital.bean.dto.huobi;
 
 public class HuobiBalanceCurrency {
 
