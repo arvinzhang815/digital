@@ -1,105 +1,108 @@
 package com.yingwu.digital.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.google.gson.annotations.SerializedName;
+
+import java.math.BigDecimal;
 
 
 public class HuobiOrderMatchResult {
 
-    @SerializedName("created-at")
-    private long createdAt;
+    @JSONField(name ="created-at")
+    private String entrustTime;
 
     /**
      * 成交数量
      */
-    @SerializedName("filled-amount")
-    private String filledAmount;
+    @JSONField(name ="filled-amount")
+    private BigDecimal tradeAmount;
 
-    @SerializedName("filled-fees")
-    private String filledFees;
+    @JSONField(name ="filled-fees")
+    private BigDecimal tradeFee;
 
-    @SerializedName("id")
-    private long id;
+    @JSONField(name ="id")
+    private String id;
 
-    @SerializedName("match-id")
-    private long matchId;
+    @JSONField(name ="match-id")
+    private String matchId;
 
-    @SerializedName("order-id")
-    private long orderId;
+    @JSONField(name ="order-id")
+    private String orderId;
 
-    @SerializedName("price")
-    private String price;
+    @JSONField(name ="price")
+    private BigDecimal tradePrice;
 
-    @SerializedName("source")
-    private String source;
+    @JSONField(name ="source")
+    private String entrustSource;
 
-    @SerializedName("symbol")
+    @JSONField(name ="symbol")
     private String symbol;
 
-    @SerializedName("type")
-    private String type;
+    @JSONField(name ="type")
+    private String entrustType;
 
-    public long getCreatedAt() {
-        return createdAt;
+    public String getEntrustTime() {
+        return entrustTime;
     }
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
+    public void setEntrustTime(String entrustTime) {
+        this.entrustTime = entrustTime;
     }
 
-    public String getFilledAmount() {
-        return filledAmount;
+    public BigDecimal getTradeAmount() {
+        return tradeAmount;
     }
 
-    public void setFilledAmount(String filledAmount) {
-        this.filledAmount = filledAmount;
+    public void setTradeAmount(BigDecimal tradeAmount) {
+        this.tradeAmount = tradeAmount;
     }
 
-    public String getFilledFees() {
-        return filledFees;
+    public BigDecimal getTradeFee() {
+        return tradeFee;
     }
 
-    public void setFilledFees(String filledFees) {
-        this.filledFees = filledFees;
+    public void setTradeFee(BigDecimal tradeFee) {
+        this.tradeFee = tradeFee;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getMatchId() {
+    public String getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(long matchId) {
+    public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
 
-    public long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    public String getPrice() {
-        return price;
+    public BigDecimal getTradePrice() {
+        return tradePrice;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setTradePrice(BigDecimal tradePrice) {
+        this.tradePrice = tradePrice;
     }
 
-    public String getSource() {
-        return source;
+    public String getEntrustSource() {
+        return entrustSource;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setEntrustSource(String entrustSource) {
+        this.entrustSource = entrustSource;
     }
 
     public String getSymbol() {
@@ -110,14 +113,30 @@ public class HuobiOrderMatchResult {
         this.symbol = symbol;
     }
 
-    public String getType() {
-        return type;
+    public String getEntrustType() {
+        return entrustType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setEntrustType(String entrustType) {
+        this.entrustType = entrustType;
     }
 
     public HuobiOrderMatchResult() {
+    }
+
+    @Override
+    public String toString() {
+        return "HuobiOrderMatchResult{" +
+                "entrustTime=" + entrustTime +
+                ", tradeAmount='" + tradeAmount + '\'' +
+                ", tradeFee='" + tradeFee + '\'' +
+                ", id=" + id +
+                ", matchId=" + matchId +
+                ", orderId=" + orderId +
+                ", tradePrice='" + tradePrice + '\'' +
+                ", entrustSource='" + entrustSource + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", entrustType='" + entrustType + '\'' +
+                '}';
     }
 }

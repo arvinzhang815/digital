@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yingwu.digital.dao.EntrustInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.dto.EntrustInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="trade_time" jdbcType="VARCHAR" property="tradeTime" />
+    <result column="trade_amount" jdbcType="DECIMAL" property="tradeAmount" />
+    <result column="entrust_time" jdbcType="VARCHAR" property="entrustTime" />
+    <result column="entrust_amount" jdbcType="DECIMAL" property="entrustAmount" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="entrust_state" jdbcType="VARCHAR" property="entrustState" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="entrust_type" jdbcType="VARCHAR" property="entrustType" />
+    <result column="entrust_source" jdbcType="VARCHAR" property="entrustSource" />
+    <result column="finish_time" jdbcType="VARCHAR" property="finishTime" />
+    <result column="entrust_price" jdbcType="DECIMAL" property="entrustPrice" />
+    <result column="trade_avg_price" jdbcType="DECIMAL" property="tradeAvgPrice" />
+    <result column="trade_fee" jdbcType="DECIMAL" property="tradeFee" />
+    <result column="trade_vol" jdbcType="DECIMAL" property="tradeVol" />
+    <result column="ext1" jdbcType="VARCHAR" property="ext1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, trade_time, trade_amount, entrust_time, entrust_amount, order_id, entrust_state, 
+    symbol, entrust_type, entrust_source, finish_time, entrust_price, trade_avg_price, 
+    trade_fee, trade_vol, ext1
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_entrust_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_entrust_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yingwu.digital.bean.dto.EntrustInfo">
+    insert into t_entrust_info (id, trade_time, trade_amount, 
+      entrust_time, entrust_amount, order_id, 
+      entrust_state, symbol, entrust_type, 
+      entrust_source, finish_time, entrust_price, 
+      trade_avg_price, trade_fee, trade_vol, 
+      ext1)
+    values (#{id,jdbcType=INTEGER}, #{tradeTime,jdbcType=VARCHAR}, #{tradeAmount,jdbcType=DECIMAL}, 
+      #{entrustTime,jdbcType=VARCHAR}, #{entrustAmount,jdbcType=DECIMAL}, #{orderId,jdbcType=VARCHAR}, 
+      #{entrustState,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, #{entrustType,jdbcType=VARCHAR}, 
+      #{entrustSource,jdbcType=VARCHAR}, #{finishTime,jdbcType=VARCHAR}, #{entrustPrice,jdbcType=DECIMAL}, 
+      #{tradeAvgPrice,jdbcType=DECIMAL}, #{tradeFee,jdbcType=DECIMAL}, #{tradeVol,jdbcType=DECIMAL}, 
+      #{ext1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.dto.EntrustInfo">
+    insert into t_entrust_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tradeTime != null">
+        trade_time,
+      </if>
+      <if test="tradeAmount != null">
+        trade_amount,
+      </if>
+      <if test="entrustTime != null">
+        entrust_time,
+      </if>
+      <if test="entrustAmount != null">
+        entrust_amount,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="entrustState != null">
+        entrust_state,
+      </if>
+      <if test="symbol != null">
+        symbol,
+      </if>
+      <if test="entrustType != null">
+        entrust_type,
+      </if>
+      <if test="entrustSource != null">
+        entrust_source,
+      </if>
+      <if test="finishTime != null">
+        finish_time,
+      </if>
+      <if test="entrustPrice != null">
+        entrust_price,
+      </if>
+      <if test="tradeAvgPrice != null">
+        trade_avg_price,
+      </if>
+      <if test="tradeFee != null">
+        trade_fee,
+      </if>
+      <if test="tradeVol != null">
+        trade_vol,
+      </if>
+      <if test="ext1 != null">
+        ext1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tradeTime != null">
+        #{tradeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAmount != null">
+        #{tradeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="entrustTime != null">
+        #{entrustTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustAmount != null">
+        #{entrustAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustState != null">
+        #{entrustState,jdbcType=VARCHAR},
+      </if>
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustType != null">
+        #{entrustType,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustSource != null">
+        #{entrustSource,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null">
+        #{finishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPrice != null">
+        #{entrustPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeAvgPrice != null">
+        #{tradeAvgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeFee != null">
+        #{tradeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeVol != null">
+        #{tradeVol,jdbcType=DECIMAL},
+      </if>
+      <if test="ext1 != null">
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.dto.EntrustInfo">
+    update t_entrust_info
+    <set>
+      <if test="tradeTime != null">
+        trade_time = #{tradeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAmount != null">
+        trade_amount = #{tradeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="entrustTime != null">
+        entrust_time = #{entrustTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustAmount != null">
+        entrust_amount = #{entrustAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustState != null">
+        entrust_state = #{entrustState,jdbcType=VARCHAR},
+      </if>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustType != null">
+        entrust_type = #{entrustType,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustSource != null">
+        entrust_source = #{entrustSource,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null">
+        finish_time = #{finishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPrice != null">
+        entrust_price = #{entrustPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeAvgPrice != null">
+        trade_avg_price = #{tradeAvgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeFee != null">
+        trade_fee = #{tradeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeVol != null">
+        trade_vol = #{tradeVol,jdbcType=DECIMAL},
+      </if>
+      <if test="ext1 != null">
+        ext1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.dto.EntrustInfo">
+    update t_entrust_info
+    set trade_time = #{tradeTime,jdbcType=VARCHAR},
+      trade_amount = #{tradeAmount,jdbcType=DECIMAL},
+      entrust_time = #{entrustTime,jdbcType=VARCHAR},
+      entrust_amount = #{entrustAmount,jdbcType=DECIMAL},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      entrust_state = #{entrustState,jdbcType=VARCHAR},
+      symbol = #{symbol,jdbcType=VARCHAR},
+      entrust_type = #{entrustType,jdbcType=VARCHAR},
+      entrust_source = #{entrustSource,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=VARCHAR},
+      entrust_price = #{entrustPrice,jdbcType=DECIMAL},
+      trade_avg_price = #{tradeAvgPrice,jdbcType=DECIMAL},
+      trade_fee = #{tradeFee,jdbcType=DECIMAL},
+      trade_vol = #{tradeVol,jdbcType=DECIMAL},
+      ext1 = #{ext1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

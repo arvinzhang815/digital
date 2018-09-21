@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yingwu.digital.dao.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yingwu.digital.bean.dto.UserInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="account_Name" property="accountName" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="api_key" property="apiKey" jdbcType="VARCHAR" />
+    <result column="secret_key" property="secretKey" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="base_currency" property="baseCurrency" jdbcType="VARCHAR" />
+    <result column="base_count" property="baseCount" jdbcType="DECIMAL" />
+    <result column="ext1" property="ext1" jdbcType="VARCHAR" />
+    <result column="ext2" property="ext2" jdbcType="VARCHAR" />
+    <result column="ext3" property="ext3" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, account_Name, account, api_key, secret_key, password, base_currency, base_count, 
+    ext1, ext2, ext3, start_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yingwu.digital.bean.dto.UserInfo" >
+    insert into t_user_info (id, account_Name, account, 
+      api_key, secret_key, password, 
+      base_currency, base_count, ext1, 
+      ext2, ext3, start_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{accountName,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{apiKey,jdbcType=VARCHAR}, #{secretKey,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{baseCurrency,jdbcType=VARCHAR}, #{baseCount,jdbcType=DECIMAL}, #{ext1,jdbcType=VARCHAR}, 
+      #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yingwu.digital.bean.dto.UserInfo" >
+    insert into t_user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="accountName != null" >
+        account_Name,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="apiKey != null" >
+        api_key,
+      </if>
+      <if test="secretKey != null" >
+        secret_key,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="baseCurrency != null" >
+        base_currency,
+      </if>
+      <if test="baseCount != null" >
+        base_count,
+      </if>
+      <if test="ext1 != null" >
+        ext1,
+      </if>
+      <if test="ext2 != null" >
+        ext2,
+      </if>
+      <if test="ext3 != null" >
+        ext3,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="apiKey != null" >
+        #{apiKey,jdbcType=VARCHAR},
+      </if>
+      <if test="secretKey != null" >
+        #{secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="baseCurrency != null" >
+        #{baseCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="baseCount != null" >
+        #{baseCount,jdbcType=DECIMAL},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null" >
+        #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null" >
+        #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yingwu.digital.bean.dto.UserInfo" >
+    update t_user_info
+    <set >
+      <if test="accountName != null" >
+        account_Name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="apiKey != null" >
+        api_key = #{apiKey,jdbcType=VARCHAR},
+      </if>
+      <if test="secretKey != null" >
+        secret_key = #{secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="baseCurrency != null" >
+        base_currency = #{baseCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="baseCount != null" >
+        base_count = #{baseCount,jdbcType=DECIMAL},
+      </if>
+      <if test="ext1 != null" >
+        ext1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null" >
+        ext2 = #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null" >
+        ext3 = #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yingwu.digital.bean.dto.UserInfo" >
+    update t_user_info
+    set account_Name = #{accountName,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      api_key = #{apiKey,jdbcType=VARCHAR},
+      secret_key = #{secretKey,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      base_currency = #{baseCurrency,jdbcType=VARCHAR},
+      base_count = #{baseCount,jdbcType=DECIMAL},
+      ext1 = #{ext1,jdbcType=VARCHAR},
+      ext2 = #{ext2,jdbcType=VARCHAR},
+      ext3 = #{ext3,jdbcType=VARCHAR},
+      start_date = #{startDate,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 查询条件 -->
+  <sql id="sqlWhere">
+    <where>
+      <if test="account != null">
+        account = #{account}
+      </if>
+      <if test="accountName != null">
+        AND account_name = #{accountName}
+      </if>
+      <if test="apiKey != null">
+        AND api_key = #{apiKey}
+      </if>
+      <if test="secretKey != null">
+        AND secret_key = #{secretKey}
+      </if>
+      <if test="password != null">
+        AND password = #{password}
+      </if>
+      <if test="baseCurrency != null">
+        AND base_currency = #{baseCurrency}
+      </if>
+      <if test="baseCount != null">
+        AND base_count = #{baseCount}
+      </if>
+      <if test="startDate != null">
+        AND start_date = #{startDate}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getUserInfo" parameterType="com.yingwu.digital.bean.dto.UserInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_info
+    <include refid="sqlWhere" />
+  </select>
+</mapper>

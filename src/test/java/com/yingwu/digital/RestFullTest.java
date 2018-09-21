@@ -1,14 +1,19 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.bean.dto.huobi.Account;
-import com.yingwu.digital.bean.dto.huobi.HuobiBalance;
-import com.yingwu.digital.bean.resp.huobi.*;
+import com.yingwu.digital.bean.HuobiTradeDetail;
+import com.yingwu.digital.bean.dto.huobi.Symbol;
+import com.yingwu.digital.bean.resp.huobi.SymbolsResponse;
+import com.yingwu.digital.bean.resp.huobi.TradeResponse;
 import com.yingwu.digital.client.huobi.HuobiApiRestClient;
+import com.yingwu.digital.dao.huobi.HuobiEntrustInfoMapper;
 import com.yingwu.digital.util.ApiUtil;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Created by: zhangbingbing
@@ -18,15 +23,34 @@ public class RestFullTest {
     private String API_KEY = "7d8219aa-09bfe59d-1f9089a1-28430";
 
     private String API_SECRET = "90f6a25d-8421df14-816d2a20-379a9";
+    @Autowired
+    private HuobiEntrustInfoMapper huobiEntrustInfoMapper;
     @Test
     public void restFullTest(){
         HuobiApiRestClient client = new HuobiApiRestClient(API_KEY, API_SECRET);
         // get symbol list:
-        List<Account> response = client.getAccounts();
-        MatchresultsOrdersDetailResponse responsew = client.matchresult();
-        //Account{id='4604531', type='spot', state='working', userid='null'}Account{id='4604531', type='spot', state='working', userid='null'}
-        print(response);
-        print(responsew);
+        TradeResponse response = client.trade("ethbtc");
+//        List<Symbol> ordersDetailResponse = client.getSymbols();
+//        for(Symbol temp : ordersDetailResponse){
+//            System.out.println(temp.getSymbol() + "----" + temp.getSymbolPrecision());
+//        }
+        List<Map<String,Object>> test = (List<Map<String,Object>>)response.getTick().getData();
+
+        BigDecimal testsss = BigDecimal.valueOf((Double) test.get(0).get("price")) ;
+        System.out.println(testsss);
+        System.out.println(test);
+//        log.info("订单查询返回值为：" + ordersDetailResponse.toString());
+//        List<HuobiOrderMatchResult> responseList = (List<HuobiOrderMatchResult>)ordersDetailResponse.getData();
+//        for(HuobiOrderMatchResult temp : responseList){
+//            HuobiEntrustInfo info = new HuobiEntrustInfo();
+//            BeanUtils.copyProperties(temp,info);
+//            //入库
+//            int count = huobiEntrustInfoMapper.insert(info);
+//            if(count < 1){
+////                log.info("交易详情入库异常" + info.toString());
+//                throw new DigitalException("交易详情入库异常" + info.toString());
+//            }
+//        }
 
         //获取 K 线
         //------------------------------------------------------ kline -------------------------------------------------------

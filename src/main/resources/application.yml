@@ -7,14 +7,27 @@ spring:
     url: jdbc:mysql://39.108.128.195:3306/arvinzhang
     username: root
     password: arvinzhang
-    # Druid数据库连接
     driver-class-name: com.mysql.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    username: 545286799@qq.com
+    password: qrjninwzcosbbefi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
-## mybatis配置
+## mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.yingwu.digital.bean.POJO
 
 logging:
   config: classpath:log4j2.xml
+
+
+
 

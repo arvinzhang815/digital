@@ -19,7 +19,7 @@ public class TimerController {
     @Autowired
     private HuobiApiService huobiApiService;
 
-    @Scheduled(cron = "0/20 * * * * *")
+//    @Scheduled(cron = "0/20 * * * * *")
     public void scheduled() {
         log.info("=====>>>>>使用cron  {}", System.currentTimeMillis());
         //    private String API_KEY = "7d8219aa-09bfe59d-1f9089a1-28430";
@@ -32,13 +32,13 @@ public class TimerController {
         System.out.println("helllo");
     }
 
-    @Scheduled(fixedRate = 5000)
+//    @Scheduled(fixedRate = 5000)
     public void scheduled1() {
         log.info("=====>>>>>使用fixedRate{}", System.currentTimeMillis());
         System.out.println("world");
     }
 
-    @Scheduled(fixedDelay = 5000)
+//    @Scheduled(fixedDelay = 5000)
     public void scheduled2() {
         log.info("=====>>>>>fixedDelay{}", System.currentTimeMillis());
         System.out.println("yingwu");

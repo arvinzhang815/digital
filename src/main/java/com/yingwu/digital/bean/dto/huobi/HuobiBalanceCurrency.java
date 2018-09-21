@@ -1,5 +1,7 @@
 package com.yingwu.digital.bean.dto.huobi;
 
+import java.math.BigDecimal;
+
 public class HuobiBalanceCurrency {
 
     public static final String TYPE_TRADE = "trade";
@@ -10,7 +12,7 @@ public class HuobiBalanceCurrency {
 
     private String type;
 
-    private String balance;
+    private BigDecimal balance;
 
     public String getCurrency() {
         return currency;
@@ -28,11 +30,11 @@ public class HuobiBalanceCurrency {
         this.type = type;
     }
 
-    public String getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

@@ -1,16 +1,21 @@
 package com.yingwu.digital.client.huobi;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.yingwu.digital.base.DigitalConst;
 import com.yingwu.digital.base.DigitalException;
+import com.yingwu.digital.bean.HuobiOrderMatchResult;
 import com.yingwu.digital.bean.dto.huobi.Account;
 import com.yingwu.digital.bean.dto.huobi.HuobiBalance;
+import com.yingwu.digital.bean.dto.huobi.HuobiEntrustInfo;
 import com.yingwu.digital.bean.dto.huobi.Symbol;
 import com.yingwu.digital.bean.resp.ApiResponse;
 import com.yingwu.digital.bean.resp.huobi.*;
 import com.yingwu.digital.util.ApiSignature;
 import com.yingwu.digital.util.ApiUtil;
 import okhttp3.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.crypto.Data;
@@ -23,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.MatchResult;
 import java.util.stream.Collectors;
 
 /**
@@ -72,6 +78,19 @@ public class HuobiApiRestClient {
         this.assetPassword = assetPassword;
     }
 
+    /**
+     * GET /market/trade 获取 Trade Detail 数据
+     *
+     * @param symbol
+     * @return
+     */
+    public TradeResponse trade(String symbol) {
+        HashMap map = new HashMap();
+        map.put("symbol", symbol);
+        TradeResponse resp = get("/market/trade", map, new TypeReference<TradeResponse>() {
+        });
+        return resp;
+    }
     /**
      * 查询交易对
      *
@@ -176,12 +195,22 @@ public class HuobiApiRestClient {
         Calendar cal=Calendar.getInstance();
         cal.add(Calendar.DATE,-1);
         Date time=cal.getTime();
-        String endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(time);
-        String startDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        String startDate = new SimpleDateFormat("yyyy-MM-dd").format(time);
+        String endDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
         map.put("start-date", startDate);
         map.put("end-date", endDate);
+
         MatchresultsOrdersDetailResponse resp = get("/v1/order/matchresults", map, new TypeReference<MatchresultsOrdersDetailResponse>() {
         });
+
+        List<Map> respData = (List<Map>) resp.getData();
+        List<HuobiOrderMatchResult> resultList = new ArrayList<>();
+
+        for(Map temp : respData){
+            HuobiOrderMatchResult results = JSONObject.toJavaObject((JSON) JSONObject.toJSON(temp),HuobiOrderMatchResult.class);
+            resultList.add(results);
+        }
+        resp.setData(resultList);
         return resp;
     }
 

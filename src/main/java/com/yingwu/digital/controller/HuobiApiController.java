@@ -1,5 +1,6 @@
 package com.yingwu.digital.controller;
 
+import com.yingwu.digital.bean.request.ApiRequest;
 import com.yingwu.digital.bean.request.huobi.HuobiWSApiRequest;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.service.HuobiApiService;
@@ -58,6 +59,19 @@ public class HuobiApiController {
             log.info("subTradeDetail请求返回值：" + apiResponse.toString());
         } catch (Exception e) {
             log.info("subTradeDetail请求异常：" + e.toString());
+            apiResponse.setError();
+        }
+        return apiResponse;
+    }
+    @RequestMapping("/getuserinfo")
+    public ApiResponse getUserInfo(@RequestBody ApiRequest apiRequest){
+        log.info("getUserInfo请求参数：" + apiRequest.toString());
+        ApiResponse  apiResponse = new ApiResponse();
+        try {
+            apiResponse = houbiApiService.getUserInfo(apiRequest);
+            log.info("getUserInfo请求返回值：" + apiResponse.toString());
+        } catch (Exception e) {
+            log.info("getUserInfo请求异常：" + e.toString());
             apiResponse.setError();
         }
         return apiResponse;
