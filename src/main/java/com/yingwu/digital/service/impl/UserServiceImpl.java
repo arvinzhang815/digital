@@ -3,18 +3,19 @@ package com.yingwu.digital.service.impl;
 import com.yingwu.digital.base.ApiResponse;
 import com.yingwu.digital.base.DigitalException;
 import com.yingwu.digital.bean.dto.UserInfo;
-import com.yingwu.digital.dao.UserInfoMapper;
+import com.yingwu.digital.mapper.UserInfoMapper;
 import com.yingwu.digital.service.UserService;
 import com.yingwu.digital.util.DigitalStringUtils;
-import jdk.internal.org.objectweb.asm.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Created by: zhangbingbing
  * @date 2018/9/21
  **/
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

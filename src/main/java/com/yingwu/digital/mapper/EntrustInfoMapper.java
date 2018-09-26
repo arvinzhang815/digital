@@ -1,4 +1,4 @@
-package com.yingwu.digital.dao;
+package com.yingwu.digital.mapper;
 
 import com.yingwu.digital.bean.dto.EntrustInfo;
 

@@ -19,6 +19,8 @@ spring:
           starttls:
             enable: true
             required: true
+    fromMail:
+      addr: 545286799@qq.com
 
 ## mybatis
 mybatis:

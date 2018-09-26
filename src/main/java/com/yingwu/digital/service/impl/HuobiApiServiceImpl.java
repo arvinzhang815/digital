@@ -20,23 +20,24 @@ import com.yingwu.digital.bean.HuobiTradeDetail;
 import com.yingwu.digital.bean.ws.HuobiWSDepthEvent;
 import com.yingwu.digital.bean.ws.HuobiWSKLineEvent;
 import com.yingwu.digital.bean.ws.HuobiWSTradeDetailEvent;
-import com.yingwu.digital.dao.UserInfoMapper;
-import com.yingwu.digital.dao.huobi.HuobiDepthMapper;
-import com.yingwu.digital.dao.huobi.HuobiEntrustInfoMapper;
-import com.yingwu.digital.dao.huobi.HuobiKLineMapper;
-import com.yingwu.digital.dao.huobi.HuobiTradeDetailMapper;
+import com.yingwu.digital.mapper.UserInfoMapper;
+import com.yingwu.digital.mapper.huobi.HuobiDepthMapper;
+import com.yingwu.digital.mapper.huobi.HuobiEntrustInfoMapper;
+import com.yingwu.digital.mapper.huobi.HuobiKLineMapper;
+import com.yingwu.digital.mapper.huobi.HuobiTradeDetailMapper;
 import com.yingwu.digital.service.HuobiApiService;
 import com.yingwu.digital.service.HuobiWSEventHandler;
+import com.yingwu.digital.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.client.WebSocketClient;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,9 +57,12 @@ public class HuobiApiServiceImpl implements HuobiApiService {
     private HuobiEntrustInfoMapper huobiEntrustInfoMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    private static List<String> baseCurrencyList = Arrays.asList("usdt", "btc", "eth","ht");
+
 
     @Autowired
-    private JavaMailSender mailSender;
+//    @Qualifier("eMailService")
+    private MailService mailService;
 
     private static Logger log = LoggerFactory.getLogger(HuobiApiServiceImpl.class);
     private static ApiClientFactory factory = ApiClientFactory.newInstance();
@@ -74,13 +78,13 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                 @Override
                 public void handleKLine(HuobiWSKLineEvent event) {
                     KLine kLine = new KLine();
-                    BeanUtils.copyProperties(event,kLine);
+                    BeanUtils.copyProperties(event, kLine);
                     HuobiKLineData data = event.getData();
-                    BeanUtils.copyProperties(data,kLine);
+                    BeanUtils.copyProperties(data, kLine);
                     kLine.setKlinId(data.getId());
-                    log.info("K线数据"+kLine.toString());
+                    log.info("K线数据" + kLine.toString());
                     int count = huobiKLineMapper.insert(kLine);
-                    if(count < 1){
+                    if (count < 1) {
                         log.info("K线数据入库出错" + event.toString());
                         throw new DigitalException("K线数据入库出错" + event.toString());
                     }
@@ -115,12 +119,12 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                 @Override
                 public void handleDepth(HuobiWSDepthEvent event) {
                     Depth depth = new Depth();
-                    BeanUtils.copyProperties(event,depth);
+                    BeanUtils.copyProperties(event, depth);
                     depth.setAsks(event.getAsks().toString());
                     depth.setBids(event.getBids().toString());
-                    log.info("深度数据"+depth.toString());
+                    log.info("深度数据" + depth.toString());
                     int count = huobiDepthMapper.insert(depth);
-                    if(count < 1){
+                    if (count < 1) {
                         log.info("深度数据入库异常" + event.toString());
                         throw new DigitalException("深度数据入库异常" + event.toString());
                     }
@@ -149,15 +153,15 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                 public void handleTradeDetail(HuobiWSTradeDetailEvent event) {
 
                     TradeDetail tradeDetail = new TradeDetail();
-                    BeanUtils.copyProperties(event,tradeDetail);
-                    if(event.getDetails() != null && event.getDetails().size() > 0){
-                        for(HuobiTradeDetail tmp : event.getDetails()){
-                            BeanUtils.copyProperties(tmp,tradeDetail);
+                    BeanUtils.copyProperties(event, tradeDetail);
+                    if (event.getDetails() != null && event.getDetails().size() > 0) {
+                        for (HuobiTradeDetail tmp : event.getDetails()) {
+                            BeanUtils.copyProperties(tmp, tradeDetail);
                             tradeDetail.setTradeId(tmp.getId());
                             tradeDetail.setTradeTs(tmp.getTs());
-                            log.info("交易详情数据"+tradeDetail.toString());
+                            log.info("交易详情数据" + tradeDetail.toString());
                             int count = huobiTradeDetailMapper.insert(tradeDetail);
-                            if(count < 1){
+                            if (count < 1) {
                                 log.info("交易详情入库异常" + event.toString());
                                 throw new DigitalException("交易详情入库异常" + event.toString());
                             }
@@ -192,16 +196,16 @@ public class HuobiApiServiceImpl implements HuobiApiService {
     @Override
     public ApiResponse getUserInfo(ApiRequest request) throws DigitalException {
         ApiResponse response = new ApiResponse();
-        Map<String,Object> resultMap = new HashMap<>();
-        Map<String,Object> returnMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> returnMap = new HashMap<>();
         try {
             //根据account获取apikey apisecretkey
             UserInfo info = new UserInfo();
             info.setAccount(request.getAccount());
             List<UserInfo> userInfoList = userInfoMapper.getUserInfo(info);
-            if (userInfoList != null && userInfoList.size() > 0){
+            if (userInfoList != null && userInfoList.size() > 0) {
                 info = userInfoList.get(0);
-            }else{
+            } else {
                 log.info("查询不到account：" + request.getAccount() + "用户相关信息");
                 response.setError();
                 response.setMsg("查询结果为空");
@@ -211,23 +215,24 @@ public class HuobiApiServiceImpl implements HuobiApiService {
             resultMap = getUserBalanceInfo(info);
 
             //根据所有余额信息获取单币种总数
-            Map<String,BigDecimal> countMap = getBalanceCountByMap(resultMap);
+            Map<String, BigDecimal> countMap = getBalanceCountByMap(resultMap);
             //换算成币本位值
-            BigDecimal lastValue = getLastValueByCount(countMap,info);
-            returnMap.put("userInfo",info);
-            returnMap.put("lastValue",lastValue);
+            BigDecimal lastValue = getLastValueByCount(countMap, info);
+            returnMap.put("userInfo", info);
+            returnMap.put("lastValue", lastValue);
             int opDate = getOpDate(info);
-            returnMap.put("opDate",opDate);
-            returnMap.put("change",lastValue.divide(info.getBaseCount(),6,BigDecimal.ROUND_FLOOR));
+            returnMap.put("opDate", opDate);
+            returnMap.put("change", lastValue.divide(info.getBaseCount(), 6, BigDecimal.ROUND_FLOOR));
             response.setSuccess();
             response.setData(returnMap);
             log.info("账户APIKey：" + request.getApiKey() + "余额信息：" + resultMap.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info("获取账户信息出错" + e.toString());
-            throw new DigitalException("获取账户信息出错" );
+            throw new DigitalException("获取账户信息出错");
         }
         return response;
     }
+
 
     private int getOpDate(UserInfo userInfo) {
         long nowDateTime = new Date().getTime();
@@ -235,7 +240,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         try {
             long startDateTime = dateFormat.parse(userInfo.getStartDate()).getTime();
-            opDate = (int)(nowDateTime - startDateTime)/(24*60*60*1000);
+            opDate = (int) (nowDateTime - startDateTime) / (24 * 60 * 60 * 1000);
         } catch (ParseException e) {
             log.info("时间解析出错" + userInfo.getStartDate());
         }
@@ -246,40 +251,40 @@ public class HuobiApiServiceImpl implements HuobiApiService {
         String baseCurrency = info.getBaseCurrency();
         log.info("基础币种为：" + baseCurrency);
         BigDecimal result = BigDecimal.ZERO;
-        HuobiApiRestClient restClient  = new HuobiApiRestClient(info.getApiKey(),info.getSecretKey(),info.getPassword());
-        for(Map.Entry<String,BigDecimal> entry : countMap.entrySet()){
+        HuobiApiRestClient restClient = new HuobiApiRestClient(info.getApiKey(), info.getSecretKey(), info.getPassword());
+        for (Map.Entry<String, BigDecimal> entry : countMap.entrySet()) {
             //原币种
-            if(baseCurrency.equals(entry.getKey())){
+            if (baseCurrency.equals(entry.getKey())) {
                 result = result.add(entry.getValue());
-            }else { //其他币种，查询最新成交价换算
+            } else { //其他币种，查询最新成交价换算
                 //组合交易对
-                String symbols = baseCurrency + entry.getKey();
+                String symbols = getSymbolByBaseCurrency(baseCurrency, entry.getKey());
                 //获取当前交易对最新成交价
                 TradeResponse response = restClient.trade(symbols);
                 //判断交易对是否正确
                 //FIXME 交易对问题
-                if(!response.getStatus().equals("ok")){
-                    symbols = entry.getKey() + baseCurrency;
+                if (!response.getStatus().equals("ok")) {
+                    symbols = baseCurrency + entry.getKey();
                     response = restClient.trade(symbols);
-                    if(!response.getStatus().equals("ok")){
+                    if (!response.getStatus().equals("ok")) {
                         //交易对错误
                         log.info("最新成交价查询错误，交易对：" + symbols + "返回值为：" + response.toString());
 
-                    }else{
+                    } else {
                         //获取最新成交价
-                        List<Map<String,Object>> tradeData = (List<Map<String,Object>>)response.getTick().getData();
-                        BigDecimal lastPrice = BigDecimal.valueOf((Double) tradeData.get(0).get("price")) ;
+                        List<Map<String, Object>> tradeData = (List<Map<String, Object>>) response.getTick().getData();
+                        BigDecimal lastPrice = BigDecimal.valueOf((Double) tradeData.get(0).get("price"));
                         log.info("交易对------" + symbols + "最新成交价：" + lastPrice + "====result:" + result);
                         //换算成基础币
                         result = result.add(entry.getValue().multiply(lastPrice));
                     }
-                }else{
+                } else {
                     //获取最新成交价
-                    List<Map<String,Object>> tradeData = (List<Map<String,Object>>)response.getTick().getData();
-                    BigDecimal lastPrice = BigDecimal.valueOf((Double) tradeData.get(0).get("price")) ;
+                    List<Map<String, Object>> tradeData = (List<Map<String, Object>>) response.getTick().getData();
+                    BigDecimal lastPrice = BigDecimal.valueOf((Double) tradeData.get(0).get("price"));
                     //换算成基础币
                     log.info("交易对------" + symbols + "最新成交价：" + lastPrice + "====result:" + result);
-                    result = result.add(entry.getValue().divide(lastPrice,10,BigDecimal.ROUND_HALF_UP));
+                    result = result.add(entry.getValue().divide(lastPrice, 10, BigDecimal.ROUND_HALF_UP));
                 }
             }
 
@@ -287,53 +292,75 @@ public class HuobiApiServiceImpl implements HuobiApiService {
         return result;
     }
 
+    private static String getSymbolByBaseCurrency(String baseCurrency, String key) {
+        String symbols = "";
+        if (baseCurrencyList.contains(key)) {
+            if(key.equals(baseCurrencyList.get(0))){//key是usdt
+                symbols = baseCurrency + key;//*+usdt
+            }else if(key.equals(baseCurrencyList.get(1)) && baseCurrency.equals(baseCurrencyList.get(0))){//key是btc,base是usdt
+                symbols = key + baseCurrency;//btcusdt
+            }else if(key.equals(baseCurrencyList.get(1))){//key是btc
+                symbols = baseCurrency + key;//*+btc
+            }else if(key.equals(baseCurrencyList.get(2)) && !baseCurrency.equals(baseCurrencyList.get(3))){//key是eth且base不是ht
+                symbols = key + baseCurrency ;//eth+*
+            }else if(key.equals(baseCurrencyList.get(2)) ){//key是eth
+                symbols = baseCurrency + key;//*+eth
+            }else if(key.equals(baseCurrencyList.get(3))){//key 是 ht
+                symbols = key + baseCurrency;//ht+*
+            }
+        }else{
+            symbols = key + baseCurrency;
+        }
+        return symbols;
+    }
+
     private Map<String, BigDecimal> getBalanceCountByMap(Map<String, Object> resultMap) {
         //遍历不同账户类别 获取单个币种的总数量
         Map<String, BigDecimal> countMap = new HashMap<>();
-        for(Map.Entry<String,Object> entry : resultMap.entrySet()){
-            List<HuobiBalanceCurrency> balanceCurrencyList = (List<HuobiBalanceCurrency>)entry.getValue();
-            for(HuobiBalanceCurrency temp : balanceCurrencyList){
+        for (Map.Entry<String, Object> entry : resultMap.entrySet()) {
+            List<HuobiBalanceCurrency> balanceCurrencyList = (List<HuobiBalanceCurrency>) entry.getValue();
+            for (HuobiBalanceCurrency temp : balanceCurrencyList) {
                 BigDecimal tempBalance = temp.getBalance();
-                if(countMap.containsKey(temp.getCurrency())){
+                if (countMap.containsKey(temp.getCurrency())) {
                     tempBalance = countMap.get(temp.getCurrency()).add(tempBalance);
                 }
-                countMap.put(temp.getCurrency(),tempBalance);
+                countMap.put(temp.getCurrency(), tempBalance);
             }
         }
         return countMap;
     }
 
     private Map<String, Object> getUserBalanceInfo(UserInfo info) {
-        Map<String,Object> resultMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
 
         //先获取该apikey的所有账户信息
-        HuobiApiRestClient restClient  = new HuobiApiRestClient(info.getApiKey(),info.getSecretKey(),info.getPassword());
+        HuobiApiRestClient restClient = new HuobiApiRestClient(info.getApiKey(), info.getSecretKey(), info.getPassword());
         List<Account> accountList = restClient.getAccounts();
-        if(accountList != null && accountList.size() > 0){
-            for(Account temp : accountList){
-                if(!DigitalConst.HUOBI_ACCOUNT_STATE_WORKING.equals(temp.getState())){
-                    log.info("账户：" + temp.getId()+"被锁定");
+        if (accountList != null && accountList.size() > 0) {
+            for (Account temp : accountList) {
+                if (!DigitalConst.HUOBI_ACCOUNT_STATE_WORKING.equals(temp.getState())) {
+                    log.info("账户：" + temp.getId() + "被锁定");
                     continue;
                 }
-                if(DigitalConst.HUOBI_ACCOUNT_TYPE_SPOT.equals(temp.getType())){//现货账户
-                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient,temp.getId());
-                    if(retrunBalance != null && retrunBalance.size() > 0){
-                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_SPOT",retrunBalance);
+                if (DigitalConst.HUOBI_ACCOUNT_TYPE_SPOT.equals(temp.getType())) {//现货账户
+                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient, temp.getId());
+                    if (retrunBalance != null && retrunBalance.size() > 0) {
+                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_SPOT", retrunBalance);
                     }
-                }else if (DigitalConst.HUOBI_ACCOUNT_TYPE_OTC.equals(temp.getType())){//otc账户
-                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient,temp.getId());
-                    if(retrunBalance != null && retrunBalance.size() > 0){
-                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_OTC",retrunBalance);
+                } else if (DigitalConst.HUOBI_ACCOUNT_TYPE_OTC.equals(temp.getType())) {//otc账户
+                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient, temp.getId());
+                    if (retrunBalance != null && retrunBalance.size() > 0) {
+                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_OTC", retrunBalance);
                     }
-                }else if(DigitalConst.HUOBI_ACCOUNT_TYPE_MARGIN.equals(temp.getType())){//杠杆账户
-                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient,temp.getId());
-                    if(retrunBalance != null && retrunBalance.size() > 0){
-                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_MARGIN",retrunBalance);
+                } else if (DigitalConst.HUOBI_ACCOUNT_TYPE_MARGIN.equals(temp.getType())) {//杠杆账户
+                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient, temp.getId());
+                    if (retrunBalance != null && retrunBalance.size() > 0) {
+                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_MARGIN", retrunBalance);
                     }
-                }else if(DigitalConst.HUOBI_ACCOUNT_TYPE_POINT.equals(temp.getType())){//点卡账户
-                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient,temp.getId());
-                    if(retrunBalance != null && retrunBalance.size() > 0){
-                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_POINT",retrunBalance);
+                } else if (DigitalConst.HUOBI_ACCOUNT_TYPE_POINT.equals(temp.getType())) {//点卡账户
+                    List<HuobiBalanceCurrency> retrunBalance = getBalanceListByAccountId(restClient, temp.getId());
+                    if (retrunBalance != null && retrunBalance.size() > 0) {
+                        resultMap.put("DigitalConst.HUOBI_ACCOUNT_TYPE_POINT", retrunBalance);
                     }
                 }
             }
@@ -357,7 +384,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
         return response;
     }
 
-//    @Scheduled(cron = "0 0 0 1/1 * ? ")  //每天一次
+    //    @Scheduled(cron = "0 0 0 1/1 * ? ")  //每天一次
     @Override
     public ApiResponse getOrders(ApiRequest request) throws DigitalException {
         ApiResponse response = new ApiResponse();
@@ -365,71 +392,79 @@ public class HuobiApiServiceImpl implements HuobiApiService {
             HuobiApiRestClient restClient = new HuobiApiRestClient(request.getApiKey(), request.getSecretKey(), request.getAssetPassword());
             MatchresultsOrdersDetailResponse ordersDetailResponse = restClient.matchresult();
             log.info("订单查询返回值为：" + ordersDetailResponse.toString());
-            List<HuobiOrderMatchResult> responseList = (List<HuobiOrderMatchResult>)ordersDetailResponse.getData();
-            for(HuobiOrderMatchResult temp : responseList){
+            List<HuobiOrderMatchResult> responseList = (List<HuobiOrderMatchResult>) ordersDetailResponse.getData();
+            for (HuobiOrderMatchResult temp : responseList) {
                 HuobiEntrustInfo info = new HuobiEntrustInfo();
-                BeanUtils.copyProperties(temp,info);
+                BeanUtils.copyProperties(temp, info);
                 //入库
                 int count = huobiEntrustInfoMapper.insert(info);
-                if(count < 1){
+                if (count < 1) {
                     log.info("交易详情入库异常" + info.toString());
                     throw new DigitalException("交易详情入库异常" + info.toString());
                 }
             }
-            if(ordersDetailResponse.getStatus().equals("ok")){
+            if (ordersDetailResponse.getStatus().equals("ok")) {
                 response.setSuccess();
                 response.setData(ordersDetailResponse.getData());
-            }else {
+            } else {
                 response.setError();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info("查询订单出错");
             throw new DigitalException("查询订单出错");
         }
-        return  response;
+        return response;
     }
 
-    private List<HuobiBalanceCurrency> getBalanceListByAccountId(HuobiApiRestClient restClient,String accountId) throws DigitalException{
+    @Override
+    public ApiResponse getKLine(HuobiWSApiRequest huobiWSApiRequest) throws DigitalException {
+
+        return null;
+    }
+
+    private List<HuobiBalanceCurrency> getBalanceListByAccountId(HuobiApiRestClient restClient, String accountId) throws DigitalException {
         //根据账户id查询账户余额
-        List<HuobiBalanceCurrency> retrunBalance =  new ArrayList<>();
+        List<HuobiBalanceCurrency> retrunBalance = new ArrayList<>();
         BalanceResponse balanceResponse = restClient.balance(accountId);
-        if(!balanceResponse.getStatus().equals("ok")){
+        if (!balanceResponse.getStatus().equals("ok")) {
             log.info("查询账户：" + accountId + "出错");
             return retrunBalance;
         }
         HuobiBalance balance = (HuobiBalance) balanceResponse.getData();
         List<HuobiBalanceCurrency> balanceCurrencyList = balance.getList();
-        for(HuobiBalanceCurrency tempBalance : balanceCurrencyList){
+        for (HuobiBalanceCurrency tempBalance : balanceCurrencyList) {
             //返回有余额的账户
-            if(!tempBalance.getBalance().equals(BigDecimal.ZERO)){
+            if (!tempBalance.getBalance().equals(BigDecimal.ZERO)) {
                 retrunBalance.add(tempBalance);
             }
         }
         return retrunBalance;
     }
 
-    @Scheduled(cron = "0 0,34 0/1 * * ? ")
-    public void lastValueTimer(){
+    @Scheduled(cron = "0 0,39 0/1 * * ? ")
+    public void lastValueTimer() {
         //查找去用户表中所有用户
-        List<UserInfo> infoList = userInfoMapper.getUserInfo(new UserInfo());
-        if(infoList != null && infoList.size() > 0){
-            for (UserInfo temp : infoList){
-                ApiRequest request = new ApiRequest();
-                request.setAccount(temp.getAccount());
-                ApiResponse response = getUserInfo(request);
-                Map<String,Object> returnMap = (Map<String,Object>)response.getData();
-                //获取涨跌幅
-                BigDecimal change = (BigDecimal)returnMap.get("change");
-                if(change.compareTo(BigDecimal.valueOf(0.95)) < 0){
-                    SimpleMailMessage message = new SimpleMailMessage();
-                    message.setFrom("545286799@qq.com");
-                    message.setTo("545286799@qq.com");
-                    message.setSubject("主题：简单邮件");
-                    message.setText("测试邮件内容");
-                    mailSender.send(message);
+        try {
+            List<UserInfo> infoList = userInfoMapper.getUserInfo(new UserInfo());
+            if (infoList != null && infoList.size() > 0) {
+                for (UserInfo temp : infoList) {
+                    ApiRequest request = new ApiRequest();
+                    request.setAccount(temp.getAccount());
+                    ApiResponse response = getUserInfo(request);
+                    Map<String, Object> returnMap = (Map<String, Object>) response.getData();
+                    //获取涨跌幅
+                    BigDecimal change = (BigDecimal) returnMap.get("change");
+                    if (change.compareTo(BigDecimal.valueOf(0.95)) < 0 || true) {
+                        SimpleMailMessage message = new SimpleMailMessage();
+                        String to = "545286799@qq.com";
+                        String subject = "简单邮件";
+                        String content = "简单邮件发送测试";
+                        mailService.sendSimpleMail(to, subject, content);
+                    }
                 }
-
             }
+        } catch (DigitalException e) {
+            log.error("最新市值判定，定时任务出错，" + e.toString());
         }
     }
 }

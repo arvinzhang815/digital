@@ -76,4 +76,18 @@ public class HuobiApiController {
         }
         return apiResponse;
     }
+
+    @RequestMapping("/getKLine")
+    public ApiResponse getKLine(@RequestBody HuobiWSApiRequest huobiWSApiRequest){
+        log.info("getKLine请求参数：" + huobiWSApiRequest.toString());
+        ApiResponse  apiResponse = new ApiResponse();
+        try {
+            apiResponse = houbiApiService.getKLine(huobiWSApiRequest);
+            log.info("getUserInfo请求返回值：" + apiResponse.toString());
+        } catch (Exception e) {
+            log.info("getUserInfo请求异常：" + e.toString());
+            apiResponse.setError();
+        }
+        return apiResponse;
+    }
 }

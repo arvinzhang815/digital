@@ -1,11 +1,11 @@
-package com.yingwu.digital.dao.huobi;
+package com.yingwu.digital.mapper.okex;
 
 
-import com.yingwu.digital.bean.dto.huobi.Depth;
+import com.yingwu.digital.bean.dto.okex.Depth;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HuobiDepthMapper {
+public interface OKExDepthMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Depth record);

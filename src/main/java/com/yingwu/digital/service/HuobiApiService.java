@@ -16,5 +16,7 @@ public interface HuobiApiService {
     public ApiResponse getOrderInfo(HuobiOrderInfoRequest request) throws DigitalException;
     public ApiResponse getOrders(ApiRequest request) throws DigitalException;
 
+    public ApiResponse getKLine(HuobiWSApiRequest huobiWSApiRequest) throws DigitalException;
+
 
 }

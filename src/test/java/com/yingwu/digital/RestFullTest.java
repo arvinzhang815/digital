@@ -1,19 +1,16 @@
 package com.yingwu.digital;
 
-import com.yingwu.digital.bean.HuobiTradeDetail;
-import com.yingwu.digital.bean.dto.huobi.Symbol;
-import com.yingwu.digital.bean.resp.huobi.SymbolsResponse;
-import com.yingwu.digital.bean.resp.huobi.TradeResponse;
+import com.yingwu.digital.bean.HuobiKLineData;
+import com.yingwu.digital.bean.resp.huobi.HuobiKLineResponse;
 import com.yingwu.digital.client.huobi.HuobiApiRestClient;
-import com.yingwu.digital.dao.huobi.HuobiEntrustInfoMapper;
+import com.yingwu.digital.mapper.huobi.HuobiEntrustInfoMapper;
 import com.yingwu.digital.util.ApiUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Created by: zhangbingbing
@@ -29,16 +26,25 @@ public class RestFullTest {
     public void restFullTest(){
         HuobiApiRestClient client = new HuobiApiRestClient(API_KEY, API_SECRET);
         // get symbol list:
-        TradeResponse response = client.trade("ethbtc");
+//        TradeResponse response = client.trade("ethbtc");
 //        List<Symbol> ordersDetailResponse = client.getSymbols();
 //        for(Symbol temp : ordersDetailResponse){
 //            System.out.println(temp.getSymbol() + "----" + temp.getSymbolPrecision());
 //        }
-        List<Map<String,Object>> test = (List<Map<String,Object>>)response.getTick().getData();
+//        List<Map<String,Object>> test = (List<Map<String,Object>>)response.getTick().getData();
 
-        BigDecimal testsss = BigDecimal.valueOf((Double) test.get(0).get("price")) ;
-        System.out.println(testsss);
-        System.out.println(test);
+        HuobiKLineResponse kline = client.kline("btcusdt", "5min", "10");
+        List<HuobiKLineData> lineData = (List<HuobiKLineData>)kline.checkAndReturn();
+        for (HuobiKLineData data : lineData){
+            Date date = new Date();
+            date.setTime(Long.parseLong(data.getId()) * 1000);
+            System.out.println(date.toString());
+            System.out.println(data.toString());
+        }
+//        print(kline);
+//        BigDecimal testsss = BigDecimal.valueOf((Double) test.get(0).get("price")) ;
+//        System.out.println(testsss);
+//        System.out.println(kline);
 //        log.info("订单查询返回值为：" + ordersDetailResponse.toString());
 //        List<HuobiOrderMatchResult> responseList = (List<HuobiOrderMatchResult>)ordersDetailResponse.getData();
 //        for(HuobiOrderMatchResult temp : responseList){

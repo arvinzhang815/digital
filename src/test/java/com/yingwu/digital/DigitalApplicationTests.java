@@ -1,17 +1,12 @@
 package com.yingwu.digital;
 
 import com.yingwu.digital.base.ApiResponse;
-import com.yingwu.digital.base.DigitalException;
-import com.yingwu.digital.bean.HuobiOrderMatchResult;
-import com.yingwu.digital.bean.dto.huobi.HuobiEntrustInfo;
 import com.yingwu.digital.bean.request.ApiRequest;
-import com.yingwu.digital.bean.resp.huobi.MatchresultsOrdersDetailResponse;
-import com.yingwu.digital.client.huobi.HuobiApiRestClient;
-import com.yingwu.digital.dao.huobi.HuobiEntrustInfoMapper;
+import com.yingwu.digital.mapper.huobi.HuobiEntrustInfoMapper;
 import com.yingwu.digital.service.HuobiApiService;
+import com.yingwu.digital.service.impl.HuobiApiServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -29,7 +25,7 @@ public class DigitalApplicationTests {
     private HuobiEntrustInfoMapper huobiEntrustInfoMapper;
     @Autowired
     @Qualifier("ehoubiApiService")
-    private HuobiApiService huobiApiService;
+    private HuobiApiServiceImpl huobiApiService;
     private String API_KEY = "7d8219aa-09bfe59d-1f9089a1-28430";
 
     private String API_SECRET = "90f6a25d-8421df14-816d2a20-379a9";
@@ -68,9 +64,9 @@ public class DigitalApplicationTests {
 //            }
         ApiRequest request = new ApiRequest();
         request.setAccount("123456");
-        ApiResponse response = huobiApiService.getUserInfo(request);
-        System.out.println(response);
+        huobiApiService.lastValueTimer();
 
         }
+
 
 }

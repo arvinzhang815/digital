@@ -6,6 +6,8 @@ import com.yingwu.digital.client.huobi.HuobiApiWSClient;
 import com.yingwu.digital.client.huobi.HuobiApiWSClientImpl;
 import com.yingwu.digital.client.okex.OKExApiWSClient;
 import com.yingwu.digital.client.okex.OKExApiWSClientImpl;
+import com.yingwu.digital.client.zb.ZBApiWSClient;
+import com.yingwu.digital.client.zb.ZBApiWSClientImpl;
 
 public class ApiClientFactory {
 
@@ -48,6 +50,9 @@ public class ApiClientFactory {
     }
     public OKExApiWSClient newOKExWSClient(){
         return new OKExApiWSClientImpl();
+    }
+    public ZBApiWSClient newZBWSClient(){
+        return new ZBApiWSClientImpl();
     }
 
 }

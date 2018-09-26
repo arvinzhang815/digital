@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.yingwu.digital.base.DigitalConst;
 import com.yingwu.digital.base.DigitalException;
+import com.yingwu.digital.bean.HuobiKLineData;
 import com.yingwu.digital.bean.HuobiOrderMatchResult;
 import com.yingwu.digital.bean.dto.huobi.Account;
 import com.yingwu.digital.bean.dto.huobi.HuobiBalance;
@@ -101,6 +102,24 @@ public class HuobiApiRestClient {
                 get("/v1/common/symbols", null, new TypeReference<ApiResponse<List<Symbol>>>() {
                 });
         return resp.checkAndReturn();
+    }
+
+    /**
+     * GET /market/history/kline 获取K线数据
+     *
+     * @param symbol
+     * @param period
+     * @param size
+     * @return
+     */
+    public HuobiKLineResponse kline(String symbol, String period, String size) {
+        HashMap map = new HashMap();
+        map.put("symbol", symbol);
+        map.put("period", period);
+        map.put("size", size);
+        HuobiKLineResponse resp = get("/market/history/kline", map, new TypeReference<HuobiKLineResponse<List<HuobiKLineData>>>() {
+        });
+        return resp;
     }
 
     /**

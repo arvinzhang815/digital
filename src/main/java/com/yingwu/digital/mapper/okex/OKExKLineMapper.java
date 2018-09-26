@@ -1,4 +1,4 @@
-package com.yingwu.digital.dao.okex;
+package com.yingwu.digital.mapper.okex;
 
 
 import com.yingwu.digital.bean.dto.okex.KLine;

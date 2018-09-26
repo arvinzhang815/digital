@@ -1,4 +1,4 @@
-package com.yingwu.digital.dao.huobi;
+package com.yingwu.digital.mapper.huobi;
 
 
 import com.yingwu.digital.bean.dto.huobi.KLine;
