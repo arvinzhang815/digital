@@ -24,6 +24,9 @@ public class DigitalConst {
     public static final String HUOBI_ACCOUNT_STATE_WORKING = "working";//正常
     public static final String HUOBI_ACCOUNT_STATE_LOCK = "LOCK";//账户被锁定
 
+    //ZB
+    public static final String ZB_API_URL = "http://api.zb.cn";
+
 
 
 

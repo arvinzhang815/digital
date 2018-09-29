@@ -10,8 +10,8 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   mail:
     host: smtp.qq.com
-    username: 545286799@qq.com
-    password: qrjninwzcosbbefi
+    username:
+    password:
     properties:
       mail:
         smtp:
@@ -20,7 +20,7 @@ spring:
             enable: true
             required: true
     fromMail:
-      addr: 545286799@qq.com
+      addr:
 
 ## mybatis
 mybatis:

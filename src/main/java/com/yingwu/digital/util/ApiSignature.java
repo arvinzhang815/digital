@@ -72,70 +72,7 @@ public class ApiSignature {
             throw new RuntimeException("Invalid key Spec: " + e.getMessage());
         }
     }
-//    /**
-//     * 创建一个有效的签名。该方法为客户端调用，将在传入的params中添加AccessKeyId、Timestamp、SignatureVersion、SignatureMethod、Signature参数。
-//     *
-//     * @param appKey       AppKeyId.
-//     * @param appSecretKey AppKeySecret.
-//     * @param method       请求方法，"GET"或"POST"
-//     * @param host         请求域名，例如"be.huobi.com"
-//     * @param uri          请求路径，注意不含?以及后的参数，例如"/v1/api/info"
-//     * @param params       原始请求参数，以Key-Value存储，注意Value不要编码
-//     */
-//    public Map<String, String> createSignature(String appKey,
-//                                String appSecretKey,
-//                                String method,
-//                                String host,
-//                                String uri,
-//                                Map<String, String> params) {
-//        if(params == null){
-//            params = new HashMap<>();
-//        }
-//        StringBuilder sb = new StringBuilder(1024);
-//        sb.append(method.toUpperCase()).append('\n') // GET
-//                .append(host.toLowerCase()).append('\n') // Host
-//                .append(uri).append('\n'); // /path
-//        params.remove("Signature");
-//        params.put("AccessKeyId", appKey);
-//        params.put("SignatureVersion", "2");
-//        params.put("SignatureMethod", "HmacSHA256");
-//        params.put("Timestamp", gmtNow());
-//        // build signature:
-//        SortedMap<String, String> map = new TreeMap<>(params);
-//        for (Map.Entry<String, String> entry : map.entrySet()) {
-//            String key = entry.getKey();
-//            String value = entry.getValue();
-//            sb.append(key).append('=').append(urlEncode(value)).append('&');
-//        }
-//        // remove last '&':
-//        sb.deleteCharAt(sb.length() - 1);
-//        // sign:
-//        Mac hmacSha256 = null;
-//        try {
-//            hmacSha256 = Mac.getInstance("HmacSHA256");
-//            SecretKeySpec secKey =
-//                    new SecretKeySpec(appSecretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
-//            hmacSha256.init(secKey);
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new RuntimeException("No such algorithm: " + e.getMessage());
-//        } catch (InvalidKeyException e) {
-//            throw new RuntimeException("Invalid key: " + e.getMessage());
-//        }
-//        String payload = sb.toString();
-//        byte[] hash = hmacSha256.doFinal(payload.getBytes(StandardCharsets.UTF_8));
-//        String actualSign = Base64.getEncoder().encodeToString(hash);
-//        params.put("Signature", actualSign);
-//        //PrivateSignature
-//        byte[] signData = null;
-//        try {
-//            signData = sign(actualSign.getBytes());
-//            String  privateSignature = Base64.getEncoder().encodeToString(signData);
-//            params.put("PrivateSignature", privateSignature);
-//        } catch (SignatureException e) {
-//            throw new RuntimeException("Signature exception:" + e.getMessage());
-//        }
-//        return params;
-//    }
+
     /**
      * 创建一个有效的签名。该方法为客户端调用，将在传入的params中添加AccessKeyId、Timestamp、SignatureVersion、SignatureMethod、Signature参数。
      *

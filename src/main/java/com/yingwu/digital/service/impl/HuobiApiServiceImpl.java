@@ -43,7 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Service("ehoubiApiService")
+@Service
 public class HuobiApiServiceImpl implements HuobiApiService {
     private WebSocketClient client = null;
 
@@ -441,7 +441,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
         return retrunBalance;
     }
 
-    @Scheduled(cron = "0 0,39 0/1 * * ? ")
+//    @Scheduled(cron = "0 0,39 0/1 * * ? ")
     public void lastValueTimer() {
         //查找去用户表中所有用户
         try {
@@ -456,7 +456,7 @@ public class HuobiApiServiceImpl implements HuobiApiService {
                     BigDecimal change = (BigDecimal) returnMap.get("change");
                     if (change.compareTo(BigDecimal.valueOf(0.95)) < 0 || true) {
                         SimpleMailMessage message = new SimpleMailMessage();
-                        String to = "545286799@qq.com";
+                        String to = "";
                         String subject = "简单邮件";
                         String content = "简单邮件发送测试";
                         mailService.sendSimpleMail(to, subject, content);

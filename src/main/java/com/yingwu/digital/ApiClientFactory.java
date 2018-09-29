@@ -8,6 +8,7 @@ import com.yingwu.digital.client.okex.OKExApiWSClient;
 import com.yingwu.digital.client.okex.OKExApiWSClientImpl;
 import com.yingwu.digital.client.zb.ZBApiWSClient;
 import com.yingwu.digital.client.zb.ZBApiWSClientImpl;
+import com.yingwu.digital.client.zb.ZBRestClient;
 
 public class ApiClientFactory {
 
@@ -54,5 +55,6 @@ public class ApiClientFactory {
     public ZBApiWSClient newZBWSClient(){
         return new ZBApiWSClientImpl();
     }
+    public ZBRestClient newZBRestClient(String apiKey,String secretKey){ return new ZBRestClient(apiKey,secretKey,"");}
 
 }

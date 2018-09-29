@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HuobiApiController {
 
     @Autowired
-    @Qualifier("ehoubiApiService")
     private HuobiApiService houbiApiService;
 
     private static Logger log = LoggerFactory.getLogger(HuobiApiController.class);
